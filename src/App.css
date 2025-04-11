@@ -1,42 +1,66 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Вся страница */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Courier New', monospace;
+  background-color: #000;
+  overflow: hidden;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Обёртка для центрирования */
+.app-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Основной контейнер */
+.game-container {
+  background-color: #0a0a0a;
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  border-left: 2px solid #0fff50;
+  border-right: 2px solid #0fff50;
+  box-shadow:
+    0 0 20px #0fff50,
+    0 0 40px rgba(15, 255, 80, 0.2),
+    0 0 60px rgba(15, 255, 80, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Контент, который будет скроллиться */
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+.molly-header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 12px;
 }
 
-.card {
-  padding: 2em;
+.molly-title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
-.read-the-docs {
-  color: #888;
+.money-counter {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ffcc;
+  text-shadow: 0 0 10px #00ffcc;
+  white-space: nowrap;
 }

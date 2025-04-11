@@ -10,16 +10,17 @@ import Progress from "./pages/Progress";
 const App = () => {
   return (
     <div className="app-wrapper">
-      <Tabs />
-      <div className="page-content">
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/progress" element={<Progress />} />
-
-          <Route path="/referrals" element={<Referrals />} />
-          <Route path="/bonus" element={<Bonus />} />
-          <Route path="/settings" element={<Settings />} />
-        </Routes>
+      <div className="game-container">
+        <Tabs />
+        <div className="page-content">
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/progress" element={<Progress />} />
+            <Route path="/bonus" element={<Bonus />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/referrals" element={<Referrals />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );

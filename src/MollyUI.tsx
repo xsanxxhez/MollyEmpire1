@@ -85,18 +85,25 @@ const MollyUI: React.FC = () => {
 
   return (
     <div className="molly-container">
-      <div className="molly-header">
-        <div className="molly-balance">
-          $MOLLY <span>{money.toFixed(2)}</span>
-        </div>
-        <button className="stats-toggle" onClick={() => setShowStats(!showStats)}>
-          📊 Stats
-        </button>
-      </div>
+      <div className="molly-header-column">
+        <<div className="molly-header-top-row">
+           <div className="molly-title neon-glow flicker">$MOLLY</div>
+           <div className="money-counter neon-glow">${money.toFixed(2)}</div>
+         </div>
 
-      <div className="molly-stats">
-        <div className="molly-stat">Risk: <span>{risk}%</span></div>
-        <div className="molly-stat">Dealers: <span>{dealers}</span></div>
+        </div>
+
+        <div className="info-blocks">
+          <button className="info-card neon-block" onClick={() => setShowStats(!showStats)}>
+            📊 Stats: <span>{totalSold}</span>
+          </button>
+          <div className="info-card neon-block">
+            ☣ Risk: <span className={risk >= 50 ? "danger" : ""}>{risk}%</span>
+          </div>
+          <div className="info-card neon-block">
+            👥 Dealers: <span>{dealers}</span>
+          </div>
+        </div>
       </div>
 
       <div className="drug-info">

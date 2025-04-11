@@ -1,12 +1,72 @@
-
 .progress-container {
-  padding: 20px;
-  color: #00ffcc;
+  padding: 16px;
+  color: #0fff50;
   font-family: monospace;
+  background-color: #000;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.progress-container h2 {
+  text-align: center;
+  text-shadow: 0 0 6px #0fff50;
 }
 
 .product-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-top: 20px;
+}
+
+.progress-card {
+  background-color: #111;
+  border: 1px solid #0fff50;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 0 12px rgba(15, 255, 80, 0.3);
+  transition: transform 0.2s;
+}
+
+.progress-card:hover {
+  transform: translateY(-3px);
+}
+
+.progress-card.locked {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.progress-card h3 {
+  margin: 0 0 10px;
+  text-shadow: 0 0 6px #0fff50;
+}
+
+.progress-card p {
+  margin: 4px 0;
+}
+
+.progress-card button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #000;
+  color: #0fff50;
+  border: 1px solid #0fff50;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.progress-card button:hover:not(:disabled) {
+  background-color: rgba(15, 255, 80, 0.2);
+}
+
+.progress-card .current-label {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
 }
