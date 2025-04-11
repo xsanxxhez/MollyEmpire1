@@ -33,11 +33,11 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney((prev: number) => prev + income);
-      setTotalEarned((prev: number) => prev + income);
+      setMoney(money + income);
+      setTotalEarned(totalEarned + income);
     }, 1000);
     return () => clearInterval(interval);
-  }, [dealers]);
+  }, [dealers, money, totalEarned]);
 
   useEffect(() => {
     if (risk >= 100 && !showRaid) {
@@ -54,20 +54,20 @@ const MollyUI = () => {
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney((prev: number) => prev + sellPrice);
-      setTotalEarned((prev: number) => prev + sellPrice);
-      setStaff((prev: number) => prev - 1);
-      setTotalSold((prev: number) => prev + 1);
-      setRisk((prev: number) => prev + 2);
+      setMoney(money + sellPrice);
+      setTotalEarned(totalEarned + sellPrice);
+      setStaff(staff - 1);
+      setTotalSold(totalSold + 1);
+      setRisk(risk + 2);
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney((prev: number) => prev - dealerCost);
-      setDealers((prev: number) => prev + 1);
-      setDealerCost((prev: number) => parseFloat((prev * dealerPriceGrowthRate).toFixed(2)));
-      setRisk((prev: number) => prev + 5);
+      setMoney(money - dealerCost);
+      setDealers(dealers + 1);
+      setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2)));
+      setRisk(risk + 5);
     }
   };
 
