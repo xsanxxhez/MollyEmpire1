@@ -1,0 +1,20 @@
+.tabs-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: #111;
+  padding: 10px 0;
+  border-bottom: 1px solid #222;
+  font-size: 22px;
+}
+
+.tab-link {
+  color: #888;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.tab-link.active {
+  color: #00ff00;
+  background-color: #222;
+}

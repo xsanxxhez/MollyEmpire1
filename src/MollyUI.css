@@ -1,0 +1,179 @@
+.molly-container {
+  background-color: #000;
+  padding: 20px 16px;
+  font-family: 'Courier New', monospace;
+  color: #00ff00;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 100vh;
+}
+
+/* === Баланс === */
+.molly-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+}
+
+.molly-balance {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ff00;
+}
+
+.molly-balance span {
+  color: #cc00ff;
+}
+
+/* === Stats блоки === */
+.molly-stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 320px;
+  gap: 10px;
+}
+
+.molly-stat {
+  border: 1px solid #00ff00;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #00ff00;
+  background-color: #111;
+  flex: 1;
+  text-align: center;
+}
+
+/* === Кнопка Stats === */
+.stats-toggle {
+  background-color: #111;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* === Stats окно === */
+.stats-window {
+  background-color: #111;
+  color: #00ffcc;
+  padding: 12px 20px;
+  margin: 12px 0;
+  border: 1px solid #00ffcc;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 320px;
+  text-align: left;
+}
+
+/* === Инфо по наркоте === */
+.drug-info {
+  background-color: #111;
+  border: 1px solid #00ff00;
+  border-radius: 10px;
+  padding: 14px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.drug-title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.drug-info p span {
+  color: #00ff00;
+}
+
+/* === Кнопки действий === */
+.action-button {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: monospace;
+  transition: background-color 0.2s ease;
+}
+
+.action-button.green {
+  background-color: #002200;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+}
+
+.action-button.green:hover {
+  background-color: #004400;
+}
+
+.action-button.blue {
+  background-color: #001122;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+}
+
+.action-button.blue:hover {
+  background-color: #002244;
+}
+
+.action-button.pink {
+  background-color: #1a001a;
+  color: #ff00ff;
+  border: 1px solid #ff00ff;
+}
+
+.action-button.pink:hover {
+  background-color: #330033;
+}
+
+.action-button.red {
+  background-color: #330000;
+  color: red;
+  border: 1px solid red;
+  margin-top: 16px;
+}
+
+.action-button.red:hover {
+  background-color: #550000;
+}
+
+/* === Raid модалка === */
+.raid-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.raid-content {
+  background-color: #1a1a1a;
+  padding: 24px;
+  border: 2px solid red;
+  border-radius: 12px;
+  color: #fff;
+  max-width: 320px;
+  text-align: center;
+  animation: pulse 1.2s infinite alternate;
+}
+
+@keyframes pulse {
+  from { box-shadow: 0 0 10px red; }
+  to { box-shadow: 0 0 20px red; }
+}

@@ -1,0 +1,12 @@
+
+.progress-container {
+  padding: 20px;
+  color: #00ffcc;
+  font-family: monospace;
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

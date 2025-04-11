@@ -1,0 +1,46 @@
+body {
+  margin: 0;
+  background-color: #000;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-content {
+  flex: 1;
+  overflow-y: auto;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 16px 0 16px;
+}
+
+.stats-toggle {
+  background-color: #111;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.stats-window {
+  background-color: #111;
+  color: #00ffcc;
+  padding: 12px 20px;
+  margin: 12px 16px;
+  border: 1px solid #00ffcc;
+  border-radius: 10px;
+}
