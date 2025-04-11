@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Tabs from "./components/Tabs";
 import Main from "./pages/Main";
@@ -6,6 +5,7 @@ import Referrals from "./pages/Referrals";
 import Bonus from "./pages/Bonus";
 import Settings from "./pages/Settings";
 import Progress from "./pages/Progress";
+import "./App.css";
 
 const App = () => {
   return (

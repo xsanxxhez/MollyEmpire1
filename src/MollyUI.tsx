@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./MollyUI.css";
 import { useGame } from "./GameContext";
 
-const MollyUI: React.FC = () => {
+const MollyUI = () => {
   const {
     money,
     setMoney,
@@ -15,12 +15,12 @@ const MollyUI: React.FC = () => {
     setDealerCost,
   } = useGame();
 
-  const [totalEarned, setTotalEarned] = useState(money);
-  const [totalSold, setTotalSold] = useState(0);
-  const [referrals] = useState(3);
-  const [risk, setRisk] = useState(0);
-  const [showRaid, setShowRaid] = useState(false);
-  const [showStats, setShowStats] = useState(false);
+  const [totalEarned, setTotalEarned] = useState<number>(money);
+  const [totalSold, setTotalSold] = useState<number>(0);
+  const [referrals] = useState<number>(3);
+  const [risk, setRisk] = useState<number>(0);
+  const [showRaid, setShowRaid] = useState<boolean>(false);
+  const [showStats, setShowStats] = useState<boolean>(false);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
@@ -33,8 +33,8 @@ const MollyUI: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(prev => prev + income);
-      setTotalEarned(prev => prev + income);
+      setMoney((prev: number) => prev + income);
+      setTotalEarned((prev: number) => prev + income);
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers]);
@@ -54,20 +54,20 @@ const MollyUI: React.FC = () => {
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney(prev => prev + sellPrice);
-      setTotalEarned(prev => prev + sellPrice);
-      setStaff(prev => prev - 1);
-      setTotalSold(prev => prev + 1);
-      setRisk(prev => prev + 2);
+      setMoney((prev: number) => prev + sellPrice);
+      setTotalEarned((prev: number) => prev + sellPrice);
+      setStaff((prev: number) => prev - 1);
+      setTotalSold((prev: number) => prev + 1);
+      setRisk((prev: number) => prev + 2);
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney(prev => prev - dealerCost);
-      setDealers(prev => prev + 1);
-      setDealerCost(prev => parseFloat((prev * dealerPriceGrowthRate).toFixed(2)));
-      setRisk(prev => prev + 5);
+      setMoney((prev: number) => prev - dealerCost);
+      setDealers((prev: number) => prev + 1);
+      setDealerCost((prev: number) => parseFloat((prev * dealerPriceGrowthRate).toFixed(2)));
+      setRisk((prev: number) => prev + 5);
     }
   };
 

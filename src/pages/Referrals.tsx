@@ -1,9 +1,9 @@
-
-import React from "react";
-import "../styles/Referrals.css";
-
 const Referrals = () => {
-  return <div className="page-container">👥 Referral System</div>;
+  return (
+    <div style={{ padding: "20px", color: "#0fff50", fontFamily: "Courier New, monospace" }}>
+      👥 Referrals Page (Work in progress)
+    </div>
+  );
 };
 
 export default Referrals;

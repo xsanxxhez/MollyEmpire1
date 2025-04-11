@@ -1,9 +1,9 @@
-
-import React from "react";
-import "../styles/Bonus.css";
-
 const Bonus = () => {
-  return <div className="page-container">🎁 Bonus Rewards</div>;
+  return (
+    <div style={{ padding: "20px", color: "#0fff50", fontFamily: "Courier New, monospace" }}>
+      🎁 Bonus Page (Coming soon)
+    </div>
+  );
 };
 
 export default Bonus;
