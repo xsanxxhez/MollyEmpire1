@@ -86,11 +86,9 @@ const MollyUI: React.FC = () => {
   return (
     <div className="molly-container">
       <div className="molly-header-column">
-        <<div className="molly-header-top-row">
-           <div className="molly-title neon-glow flicker">$MOLLY</div>
-           <div className="money-counter neon-glow">${money.toFixed(2)}</div>
-         </div>
-
+        <div className="molly-header-top-row">
+          <div className="molly-title neon-glow flicker">$MOLLY</div>
+          <div className="money-counter neon-glow">${money.toFixed(2)}</div>
         </div>
 
         <div className="info-blocks">
