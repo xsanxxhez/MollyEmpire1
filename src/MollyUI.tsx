@@ -27,7 +27,7 @@ const BinaryRain = () => {
     };
 
     const interval = setInterval(() => {
-      setDigits(prev => [...prev.slice(-50), createDigit()]);
+      setDigits((prev: BinaryDigit[]) => [...prev.slice(-50), createDigit()]);
     }, 100);
 
     return () => clearInterval(interval);
@@ -51,6 +51,8 @@ const BinaryRain = () => {
     </div>
   );
 };
+
+// Остальной код остается без изменений
 
 const MollyUI = () => {
   const {
