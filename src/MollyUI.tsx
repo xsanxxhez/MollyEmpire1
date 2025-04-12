@@ -35,7 +35,7 @@ const BinaryRain = () => {
 
   return (
     <div className="binary-code">
-      {digits.map(({id, digit, left, duration}) => (
+      {digits.map(({ id, digit, left, duration }) => (
         <div
           key={id}
           className="binary-digit"
@@ -81,8 +81,8 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(prev => prev + income);
-      setTotalEarned(prev => prev + income);
+      setMoney((prev: number) => prev + income);
+      setTotalEarned((prev: number) => prev + income);
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
@@ -132,12 +132,10 @@ const MollyUI = () => {
   return (
     <div className="molly-container">
       <BinaryRain />
-
       <div className="header-section">
         <div className="title-money-wrapper">
           <h1 className="game-title">$MOLLY <span className="money-amount">${money.toFixed(2)}</span></h1>
         </div>
-
         <div className="stats-row">
           <div className="stat-item">
             <span className="stat-label">Risk:</span>
@@ -149,14 +147,12 @@ const MollyUI = () => {
           </div>
         </div>
       </div>
-
       <div className="current-product">
         <h2 className="product-title">{productEmoji} {productName}</h2>
         <div className="product-stats">
           <p>In stock: <strong>{staff} units</strong></p>
           <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
         </div>
-
         <div className="action-buttons">
           <button
             className="action-btn buy-btn"
@@ -181,7 +177,6 @@ const MollyUI = () => {
           </button>
         </div>
       </div>
-
       {showRaid && (
         <div className="raid-modal">
           <div className="raid-content">
