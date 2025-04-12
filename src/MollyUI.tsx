@@ -77,7 +77,7 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney((prev: number) => prev + income); // Явное указание типа
+      setMoney((prev: number) => prev + income); // Указание типа
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
@@ -90,32 +90,32 @@ const MollyUI = () => {
 
   const handleBuy = () => {
     if (money >= buyPrice) {
-      setMoney((prev: number) => prev - buyPrice); // Явное указание типа
-      setStaff((prev: number) => prev + 1); // Явное указание типа
+      setMoney((prev: number) => prev - buyPrice); // Указание типа
+      setStaff((prev: number) => prev + 1); // Указание типа
     }
   };
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney((prev: number) => prev + sellPrice); // Явное указание типа
-      setStaff((prev: number) => prev - 1); // Явное указание типа
-      setRisk((prev: number) => prev + 2); // Явное указание типа
+      setMoney((prev: number) => prev + sellPrice); // Указание типа
+      setStaff((prev: number) => prev - 1); // Указание типа
+      setRisk((prev: number) => prev + 2); // Указание типа
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney((prev: number) => prev - dealerCost); // Явное указание типа
-      setDealers((prev: number) => prev + 1); // Явное указание типа
-      setDealerCost((prev: number) => parseFloat((prev * dealerPriceGrowthRate).toFixed(2))); // Явное указание типа
-      setRisk((prev: number) => prev + 5); // Явное указание типа
+      setMoney((prev: number) => prev - dealerCost); // Указание типа
+      setDealers((prev: number) => prev + 1); // Указание типа
+      setDealerCost((prev: number) => parseFloat((prev * dealerPriceGrowthRate).toFixed(2))); // Указание типа
+      setRisk((prev: number) => prev + 5); // Указание типа
     }
   };
 
   const handleRaidResolution = () => {
     if (staff > 0) {
       const lost = money * 0.5;
-      setMoney((prev: number) => prev - lost); // Явное указание типа
+      setMoney((prev: number) => prev - lost); // Указание типа
       setStaff(0);
     }
     setRisk(0);
