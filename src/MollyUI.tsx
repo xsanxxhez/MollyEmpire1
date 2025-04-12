@@ -77,7 +77,7 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(prevMoney => prevMoney + income); // Исправлено
+      setMoney(money + income); // Не функция, а новое значение
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
@@ -90,32 +90,32 @@ const MollyUI = () => {
 
   const handleBuy = () => {
     if (money >= buyPrice) {
-      setMoney(prevMoney => prevMoney - buyPrice); // Исправлено
-      setStaff(prevStaff => prevStaff + 1); // Исправлено
+      setMoney(money - buyPrice); // Не функция, а новое значение
+      setStaff(staff + 1); // Не функция, а новое значение
     }
   };
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney(prevMoney => prevMoney + sellPrice); // Исправлено
-      setStaff(prevStaff => prevStaff - 1); // Исправлено
-      setRisk(prevRisk => prevRisk + 2); // Исправлено
+      setMoney(money + sellPrice); // Не функция, а новое значение
+      setStaff(staff - 1); // Не функция, а новое значение
+      setRisk(risk + 2); // Не функция, а новое значение
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney(prevMoney => prevMoney - dealerCost); // Исправлено
-      setDealers(prevDealers => prevDealers + 1); // Исправлено
-      setDealerCost(prevCost => parseFloat((prevCost * dealerPriceGrowthRate).toFixed(2))); // Исправлено
-      setRisk(prevRisk => prevRisk + 5); // Исправлено
+      setMoney(money - dealerCost); // Не функция, а новое значение
+      setDealers(dealers + 1); // Не функция, а новое значение
+      setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2))); // Не функция, а новое значение
+      setRisk(risk + 5); // Не функция, а новое значение
     }
   };
 
   const handleRaidResolution = () => {
     if (staff > 0) {
       const lost = money * 0.5;
-      setMoney(prevMoney => prevMoney - lost); // Исправлено
+      setMoney(money - lost); // Не функция, а новое значение
       setStaff(0);
     }
     setRisk(0);
