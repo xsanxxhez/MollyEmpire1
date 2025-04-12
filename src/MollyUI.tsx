@@ -1,13 +1,19 @@
-// MollyUI.jsx
 import { useState, useEffect } from "react";
 import "./MollyUI.css";
 import { useGame } from "./GameContext";
 
+interface BinaryDigit {
+  id: string;
+  digit: string;
+  left: number;
+  duration: number;
+}
+
 const BinaryRain = () => {
-  const [digits, setDigits] = useState([]);
+  const [digits, setDigits] = useState<BinaryDigit[]>([]);
 
   useEffect(() => {
-    const createDigit = () => {
+    const createDigit = (): BinaryDigit => {
       const digit = Math.random() > 0.5 ? '1' : '0';
       const left = Math.random() * 100;
       const animationDuration = 5 + Math.random() * 10;
@@ -57,17 +63,12 @@ const MollyUI = () => {
     setDealers,
     dealerCost,
     setDealerCost,
-    unlocked,
-    unlockProduct,
-    productList
   } = useGame();
 
-  const [totalEarned, setTotalEarned] = useState(money);
-  const [totalSold, setTotalSold] = useState(0);
-  const [referrals] = useState(3);
-  const [risk, setRisk] = useState(0);
-  const [showRaid, setShowRaid] = useState(false);
-  const [showStats, setShowStats] = useState(false);
+  const [totalEarned, setTotalEarned] = useState<number>(money);
+  const [totalSold, setTotalSold] = useState<number>(0);
+  const [risk, setRisk] = useState<number>(0);
+  const [showRaid, setShowRaid] = useState<boolean>(false);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
@@ -128,15 +129,13 @@ const MollyUI = () => {
     setShowRaid(false);
   };
 
-  const incomePerMinute = (dealers * dealerIncomePerSecond * 60).toFixed(2);
-
   return (
     <div className="molly-container">
       <BinaryRain />
 
       <div className="header-section">
         <div className="title-money-wrapper">
-          <h1 className="game-title">$MOLLY <span className="money-amount">{money.toFixed(2)}</span></h1>
+          <h1 className="game-title">$MOLLY <span className="money-amount">${money.toFixed(2)}</span></h1>
         </div>
 
         <div className="stats-row">
@@ -150,7 +149,6 @@ const MollyUI = () => {
           </div>
         </div>
       </div>
-
 
       <div className="current-product">
         <h2 className="product-title">{productEmoji} {productName}</h2>
