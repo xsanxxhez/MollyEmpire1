@@ -27,7 +27,7 @@ const BinaryRain = () => {
     };
 
     const interval = setInterval(() => {
-      setDigits((prevDigits: BinaryDigit[]) => [...prevDigits.slice(-50), createDigit()]);
+      setDigits(prevDigits => [...prevDigits.slice(-50), createDigit()]);
     }, 100);
 
     return () => clearInterval(interval);
@@ -81,8 +81,8 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney((prevMoney: number) => prevMoney + income);
-      setTotalEarned((prevTotal: number) => prevTotal + income);
+      setMoney(prev => prev + income);
+      setTotalEarned(prev => prev + income);
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
