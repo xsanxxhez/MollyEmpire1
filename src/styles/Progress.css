@@ -1,3 +1,4 @@
+/* Progress.css */
 .progress-container {
   padding: 16px;
   color: #0fff50;
@@ -10,16 +11,43 @@
 .progress-container h2 {
   text-align: center;
   text-shadow: 0 0 6px #0fff50;
+  margin-bottom: 20px;
 }
 
-.product-list {
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  background-color: #000;
+  color: #0fff50;
+  border: 1px solid #0fff50;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab-button:hover {
+  background-color: rgba(15, 255, 80, 0.2);
+}
+
+.tab-button.active {
+  background-color: rgba(15, 255, 80, 0.4);
+  box-shadow: 0 0 10px #0fff50;
+}
+
+.product-list, .upgrade-list {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-top: 20px;
 }
 
-.progress-card {
+.progress-card, .upgrade-card {
   background-color: #111;
   border: 1px solid #0fff50;
   border-radius: 12px;
@@ -28,7 +56,7 @@
   transition: transform 0.2s;
 }
 
-.progress-card:hover {
+.progress-card:hover, .upgrade-card:hover {
   transform: translateY(-3px);
 }
 
@@ -37,16 +65,16 @@
   box-shadow: none;
 }
 
-.progress-card h3 {
+.progress-card h3, .upgrade-card h3 {
   margin: 0 0 10px;
   text-shadow: 0 0 6px #0fff50;
 }
 
-.progress-card p {
+.progress-card p, .upgrade-card p {
   margin: 4px 0;
 }
 
-.progress-card button {
+.progress-card button, .upgrade-card button {
   width: 100%;
   padding: 8px;
   margin-top: 10px;
@@ -59,7 +87,8 @@
   transition: background-color 0.3s;
 }
 
-.progress-card button:hover:not(:disabled) {
+.progress-card button:hover:not(:disabled),
+.upgrade-card button:hover:not(:disabled) {
   background-color: rgba(15, 255, 80, 0.2);
 }
 
@@ -69,4 +98,8 @@
   font-size: 14px;
   color: #00ffff;
   text-shadow: 0 0 5px #00ffff;
+}
+.neon-purple-name {
+  color: #39FF14;
+  text-shadow: 0 0 10px #b026ff, 0 0 10px #b026ff;
 }

@@ -1,4 +1,3 @@
-// MollyUI.tsx
 import { useState, useEffect } from "react";
 import "./MollyUI.css";
 import { useGame } from "./GameContext";
@@ -90,6 +89,7 @@ const MollyUI = () => {
     setDealerCost,
     risk,
     setRisk,
+    riskGain,
   } = useGame();
 
   const [showRaid, setShowRaid] = useState<boolean>(false);
@@ -133,6 +133,7 @@ const MollyUI = () => {
     if (money >= buyPrice) {
       setMoney(money - buyPrice);
       setStaff(staff + 1);
+      setRisk(Math.min(100, risk + riskGain));
       addNotification(`+1 oz.`, '#0fff50');
     }
   };
@@ -141,7 +142,7 @@ const MollyUI = () => {
     if (staff > 0) {
       setMoney(money + sellPrice);
       setStaff(staff - 1);
-      setRisk(risk + 2);
+      setRisk(Math.min(100, risk + riskGain * 2));
       addNotification(`+$${sellPrice.toFixed(2)}`, '#00ffff');
     }
   };
@@ -151,7 +152,7 @@ const MollyUI = () => {
       setMoney(money - dealerCost);
       setDealers(dealers + 1);
       setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2)));
-      setRisk(risk + 5);
+      setRisk(Math.min(100, risk + riskGain * 5));
       addNotification('+1 Dealer', '#ff00ff');
     }
   };
@@ -174,36 +175,36 @@ const MollyUI = () => {
           <FloatingNotification key={id} text={text} color={color} top={top} left={left} />
         ))}
       </div>
+
       <div className="header-section">
         <div className="title-money-wrapper">
           <h1 className="game-title">$MOLLY <span className="money-amount">{money.toFixed(2)}</span></h1>
         </div>
       </div>
 
-      {/* Обновленные контейнеры для риска и дилеров */}
       <div className="status-section">
-        <div className="status-header">
+        <div className="risk-header">
           <span className="status-title neon-risk">RISK METER</span>
-          <span className="status-title neon-dealers">DEALERS NETWORK</span>
+        </div>
+        <div className="risk-container">
+          <div
+            className="risk-bar"
+            style={{ width: `${risk}%` }}
+          />
         </div>
 
-        <div className="status-bars">
-          <div className="risk-container">
-            <div
-              className="risk-bar"
-              style={{ width: `${risk}%` }}
-            />
-          </div>
-          <div className="dealers-container">
-            <div className="dealers-bar">
-              <span className="dealers-count">{dealers}</span>
-            </div>
+        <div className="dealers-header">
+          <span className="status-title neon-dealers">DEALERS NETWORK</span>
+        </div>
+        <div className="dealers-container">
+          <div className="dealers-bar">
+            <span className="dealers-text">DEALERS: {dealers}</span>
           </div>
         </div>
       </div>
 
       <div className="current-product">
-        <h2 className="product-title">{currentProduct.emoji} {currentProduct.name}</h2>
+        <h2 className="product-title neon-purple-name">{currentProduct.emoji} {currentProduct.name}</h2>
         <div className="product-stats">
           <p>In stock: <strong>{staff} oz.</strong></p>
           <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
@@ -239,7 +240,34 @@ const MollyUI = () => {
         </div>
       </div>
 
-      {/* Модальные окна остаются без изменений */}
+      {showStats && (
+        <div className="stats-modal">
+          <div className="stats-content">
+            <h3 className="stats-title">📊 STATISTICS</h3>
+            <div className="stats-grid">
+              <div className="stat-item">
+                <span className="stat-label neon-green">TOTAL MONEY:</span>
+                <span className="stat-value neon-pulse-green">${money.toFixed(2)}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label neon-blue">INCOME/MIN:</span>
+                <span className="stat-value neon-pulse-blue">${incomePerMinute.toFixed(2)}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label neon-purple">REFERRALS:</span>
+                <span className="stat-value neon-pulse-purple">0</span>
+              </div>
+            </div>
+            <button
+              className="action-btn close-btn neon-hover"
+              onClick={() => setShowStats(false)}
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
+
       {showRaid && (
         <div className="raid-modal">
           <div className="raid-content">
@@ -257,33 +285,6 @@ const MollyUI = () => {
             )}
             <button className="action-btn raid-btn" onClick={handleRaidResolution}>
               Continue
-            </button>
-          </div>
-        </div>
-      )}
-      {showStats && (
-        <div className="stats-modal">
-          <div className="stats-content">
-            <h3>📊 Statistics</h3>
-            <div className="stats-grid">
-              <div className="stat-item">
-                <span className="stat-label">Total Money:</span>
-                <span className="stat-value">${money.toFixed(2)}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">Income per minute:</span>
-                <span className="stat-value">${incomePerMinute.toFixed(2)}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">Referrals:</span>
-                <span className="stat-value">0</span>
-              </div>
-            </div>
-            <button
-              className="action-btn close-btn"
-              onClick={() => setShowStats(false)}
-            >
-              Close
             </button>
           </div>
         </div>

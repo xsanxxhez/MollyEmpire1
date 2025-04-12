@@ -41,7 +41,9 @@ interface GameContextType {
   dealerCost: number;
   setDealerCost: (v: number) => void;
   risk: number;
-  setRisk: (v: number) => void; // добавляем setRisk
+  setRisk: (v: number) => void;
+  riskGain: number;
+  setRiskGain: (v: number) => void;
 }
 
 const GameContext = createContext<GameContextType | null>(null);
@@ -57,7 +59,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [staff, setStaff] = useState<number>(savedData.staff ?? 0);
   const [dealers, setDealers] = useState<number>(savedData.dealers ?? 0);
   const [dealerCost, setDealerCost] = useState<number>(savedData.dealerCost ?? 3);
-  const [risk, setRisk] = useState<number>(savedData.risk ?? 0);  // Восстановление значения risk из savedData
+  const [risk, setRisk] = useState<number>(savedData.risk ?? 20);
+  const [riskGain, setRiskGain] = useState<number>(savedData.riskGain ?? 2);
 
   const setMoney = (v: number) => setMoneyState(v);
 
@@ -67,7 +70,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // Сохраняем все данные, включая risk
   useEffect(() => {
     localStorage.setItem(
       "game-data",
@@ -78,10 +80,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         staff,
         dealers,
         dealerCost,
-        risk, // сохраняем состояние risk
+        risk,
+        riskGain,
       })
     );
-  }, [money, unlocked, currentProduct, staff, dealers, dealerCost, risk]); // добавляем зависимость от risk
+  }, [money, unlocked, currentProduct, staff, dealers, dealerCost, risk, riskGain]);
 
   return (
     <GameContext.Provider
@@ -100,7 +103,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         dealerCost,
         setDealerCost,
         risk,
-        setRisk, // добавляем setRisk в контекст
+        setRisk,
+        riskGain,
+        setRiskGain,
       }}
     >
       {children}

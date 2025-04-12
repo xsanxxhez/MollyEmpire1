@@ -116,14 +116,12 @@ body {
   text-shadow: 0 0 5px var(--neon-green);
 }
 
-/* Новые стили для секции статуса */
+/* Обновленные стили для секции статуса */
 .status-section {
   margin-bottom: 20px;
 }
 
-.status-header {
-  display: flex;
-  justify-content: space-between;
+.risk-header, .dealers-header {
   margin-bottom: 8px;
 }
 
@@ -168,12 +166,6 @@ body {
   }
 }
 
-.status-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .risk-container, .dealers-container {
   width: 100%;
   height: 30px;
@@ -182,14 +174,15 @@ body {
   position: relative;
   background: rgba(20, 20, 20, 0.7);
   border: 1px solid var(--neon-purple);
+  margin-bottom: 15px;
 }
 
 .risk-bar {
   height: 100%;
   background: linear-gradient(90deg,
     var(--neon-green) 0%,
-    var(--neon-yellow) 30%,
-    var(--neon-orange) 60%,
+    var(--neon-yellow) 35%,
+    var(--neon-orange) 65%,
     var(--neon-red) 100%);
   transition: width 0.3s ease;
   position: relative;
@@ -208,7 +201,7 @@ body {
   justify-content: center;
 }
 
-.dealers-count {
+.dealers-text {
   font-size: 16px;
   font-weight: bold;
   color: white;
@@ -225,7 +218,160 @@ body {
   }
 }
 
-/* Остальные стили (для продукта, кнопок, модальных окон) остаются без изменений */
+/* Крутой неоновый дизайн для окна статистики */
+.stats-modal {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 70%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+
+
+.stats-content {
+  background-color: rgba(10, 10, 30, 0.9);
+  padding: 25px;
+  border-radius: 10px;
+  width: 85%;
+  max-width: 400px;
+  border: 2px solid var(--neon-purple);
+  box-shadow: 0 0 20px var(--neon-purple);
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-content::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 12px;
+  background: linear-gradient(45deg,
+    var(--neon-purple),
+    var(--neon-blue),
+    var(--neon-pink),
+    var(--neon-purple));
+  background-size: 400%;
+  z-index: -1;
+  animation: border-glow 8s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes border-glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.stats-title {
+  color: var(--neon-blue);
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-shadow: 0 0 10px var(--neon-blue);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  border-left: 3px solid var(--neon-purple);
+}
+
+.stat-label {
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.neon-green {
+  color: var(--neon-green);
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+.neon-blue {
+  color: var(--neon-blue);
+  text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.neon-purple {
+  color: var(--neon-purple);
+  text-shadow: 0 0 5px var(--neon-purple);
+}
+
+.neon-pulse-green {
+  color: var(--neon-green);
+  animation: pulse-text-green 1.5s infinite alternate;
+}
+
+.neon-pulse-blue {
+  color: var(--neon-blue);
+  animation: pulse-text-blue 1.5s infinite alternate;
+}
+
+.neon-pulse-purple {
+  color: var(--neon-purple);
+  animation: pulse-text-purple 1.5s infinite alternate;
+}
+
+@keyframes pulse-text-green {
+  0% { text-shadow: 0 0 5px var(--neon-green); }
+  100% { text-shadow: 0 0 15px var(--neon-green), 0 0 20px var(--neon-green); }
+}
+
+@keyframes pulse-text-blue {
+  0% { text-shadow: 0 0 5px var(--neon-blue); }
+  100% { text-shadow: 0 0 15px var(--neon-blue), 0 0 20px var(--neon-blue); }
+}
+
+@keyframes pulse-text-purple {
+  0% { text-shadow: 0 0 5px var(--neon-purple); }
+  100% { text-shadow: 0 0 15px var(--neon-purple), 0 0 20px var(--neon-purple); }
+}
+
+.close-btn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(100, 0, 100, 0.5);
+  color: var(--neon-purple);
+  border: 1px solid var(--neon-purple);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.neon-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px var(--neon-purple);
+  background: rgba(100, 0, 100, 0.7);
+}
+
+/* Остальные стили (для продукта, кнопок, raid-modal) остаются без изменений */
 .current-product {
   background: var(--container-bg);
   border: 1px solid var(--neon-purple);
@@ -305,7 +451,6 @@ body {
   box-shadow: 0 0 15px currentColor;
 }
 
-/* Модальные окна (raid-modal и stats-modal) остаются без изменений */
 .raid-modal {
   position: fixed;
   top: 0;
@@ -330,28 +475,6 @@ body {
   animation: pulse 1.5s infinite;
 }
 
-.stats-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.stats-content {
-  background-color: #1a1a2e;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 400px;
-  border: 1px solid #6a5acd;
-}
-
 /* Адаптивность */
 @media (max-width: 480px) {
   .game-title, .money-amount {
@@ -369,5 +492,13 @@ body {
   .action-btn {
     padding: 10px;
     font-size: 14px;
+  }
+
+  .stats-title {
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 12px;
   }
 }
