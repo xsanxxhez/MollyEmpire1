@@ -3,7 +3,22 @@ import { useGame } from "../GameContext";
 import "../styles/Progress.css";
 
 const Progress: React.FC = () => {
-  const { productList, unlocked, unlockProduct, currentProduct, setCurrentProduct, money } = useGame();
+  const {
+    productList,
+    unlocked,
+    unlockProduct,
+    currentProduct,
+    setCurrentProduct,
+    money,
+    setMoney
+  } = useGame();
+
+  const handleUnlock = (product: { name: string; unlockPrice: number }) => {
+    if (money >= product.unlockPrice) {
+      setMoney(money - product.unlockPrice);
+      unlockProduct(product.name);
+    }
+  };
 
   return (
     <div className="progress-container">
@@ -19,7 +34,10 @@ const Progress: React.FC = () => {
               <h3>{product.name}</h3>
               <p>Buy: ${product.buyPrice} / Sell: ${product.sellPrice}</p>
               {!isUnlocked && (
-                <button disabled={!canUnlock} onClick={() => unlockProduct(product.name)}>
+                <button
+                  disabled={!canUnlock}
+                  onClick={() => handleUnlock(product)}
+                >
                   Unlock (${product.unlockPrice})
                 </button>
               )}

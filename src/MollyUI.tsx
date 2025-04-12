@@ -9,6 +9,14 @@ interface BinaryDigit {
   duration: number;
 }
 
+interface FloatingNotification {
+  id: string;
+  text: string;
+  color: string;
+  top: number;
+  left: number;
+}
+
 const BinaryRain = () => {
   const [digits, setDigits] = useState<BinaryDigit[]>([]);
 
@@ -52,6 +60,22 @@ const BinaryRain = () => {
   );
 };
 
+const FloatingNotification = ({ text, color, top, left }: { text: string; color: string; top: number; left: number }) => {
+  return (
+    <div
+      className="floating-notification"
+      style={{
+        color,
+        top: `${top}%`,
+        left: `${left}%`,
+        textShadow: `0 0 5px ${color}, 0 0 10px ${color}`,
+      }}
+    >
+      {text}
+    </div>
+  );
+};
+
 const MollyUI = () => {
   const {
     money,
@@ -63,10 +87,12 @@ const MollyUI = () => {
     setDealers,
     dealerCost,
     setDealerCost,
+    risk,
+    setRisk,
   } = useGame();
 
-  const [risk, setRisk] = useState<number>(0);
   const [showRaid, setShowRaid] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<FloatingNotification[]>([]);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
@@ -74,10 +100,22 @@ const MollyUI = () => {
   const dealerIncomePerSecond = 0.1;
   const dealerPriceGrowthRate = 1.15;
 
+  const addNotification = (text: string, color: string) => {
+    const id = Math.random().toString(36).substring(2, 9);
+    const left = 40 + Math.random() * 20;
+    const top = 40 + Math.random() * 10;
+
+    setNotifications(prev => [...prev, { id, text, color, top, left }]);
+
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 2000);
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(money + income); // Не функция, а новое значение
+      setMoney(money + income);
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
@@ -90,32 +128,35 @@ const MollyUI = () => {
 
   const handleBuy = () => {
     if (money >= buyPrice) {
-      setMoney(money - buyPrice); // Не функция, а новое значение
-      setStaff(staff + 1); // Не функция, а новое значение
+      setMoney(money - buyPrice);
+      setStaff(staff + 1);
+      addNotification(`+1 oz.`, '#0fff50');
     }
   };
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney(money + sellPrice); // Не функция, а новое значение
-      setStaff(staff - 1); // Не функция, а новое значение
-      setRisk(risk + 2); // Не функция, а новое значение
+      setMoney(money + sellPrice);
+      setStaff(staff - 1);
+      setRisk(risk + 2);
+      addNotification(`+$${sellPrice.toFixed(2)}`, '#00ffff');
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney(money - dealerCost); // Не функция, а новое значение
-      setDealers(dealers + 1); // Не функция, а новое значение
-      setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2))); // Не функция, а новое значение
-      setRisk(risk + 5); // Не функция, а новое значение
+      setMoney(money - dealerCost);
+      setDealers(dealers + 1);
+      setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2)));
+      setRisk(risk + 5);
+      addNotification('+1 Dealer', '#ff00ff');
     }
   };
 
   const handleRaidResolution = () => {
     if (staff > 0) {
       const lost = money * 0.5;
-      setMoney(money - lost); // Не функция, а новое значение
+      setMoney(money - lost);
       setStaff(0);
     }
     setRisk(0);
@@ -125,9 +166,14 @@ const MollyUI = () => {
   return (
     <div className="molly-container">
       <BinaryRain />
+      <div className="notifications-container">
+        {notifications.map(({ id, text, color, top, left }) => (
+          <FloatingNotification key={id} text={text} color={color} top={top} left={left} />
+        ))}
+      </div>
       <div className="header-section">
         <div className="title-money-wrapper">
-          <h1 className="game-title">$MOLLY <span className="money-amount">${money.toFixed(2)}</span></h1>
+          <h1 className="game-title">$MOLLY <span className="money-amount">{money.toFixed(2)}</span></h1>
         </div>
         <div className="stats-row">
           <div className="stat-item">
@@ -143,7 +189,7 @@ const MollyUI = () => {
       <div className="current-product">
         <h2 className="product-title">{currentProduct.emoji} {currentProduct.name}</h2>
         <div className="product-stats">
-          <p>In stock: <strong>{staff} units</strong></p>
+          <p>In stock: <strong>{staff} oz.</strong></p>
           <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
         </div>
         <div className="action-buttons">
@@ -152,14 +198,14 @@ const MollyUI = () => {
             onClick={handleBuy}
             disabled={money < buyPrice}
           >
-            Buy 1 unit (${buyPrice.toFixed(2)})
+            Buy 1 oz. (${buyPrice.toFixed(2)})
           </button>
           <button
             className="action-btn sell-btn"
             onClick={handleSell}
             disabled={staff <= 0}
           >
-            Sell 1 unit (+${sellPrice.toFixed(2)})
+            Sell 1 oz. (+${sellPrice.toFixed(2)})
           </button>
           <button
             className="action-btn dealer-btn"
