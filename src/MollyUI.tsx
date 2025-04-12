@@ -19,7 +19,7 @@ const BinaryRain = () => {
       const animationDuration = 5 + Math.random() * 10;
 
       return {
-        id: Math.random().toString(36).substr(2, 9),
+        id: Math.random().toString(36).substring(2, 9),
         digit,
         left,
         duration: animationDuration
@@ -27,7 +27,7 @@ const BinaryRain = () => {
     };
 
     const interval = setInterval(() => {
-      setDigits((prev: BinaryDigit[]) => [...prev.slice(-50), createDigit()]);
+      setDigits((prevDigits: BinaryDigit[]) => [...prevDigits.slice(-50), createDigit()]);
     }, 100);
 
     return () => clearInterval(interval);
@@ -51,8 +51,6 @@ const BinaryRain = () => {
     </div>
   );
 };
-
-// Остальной код остается без изменений
 
 const MollyUI = () => {
   const {
@@ -83,8 +81,8 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(prev => prev + income);
-      setTotalEarned(prev => prev + income);
+      setMoney((prevMoney: number) => prevMoney + income);
+      setTotalEarned((prevTotal: number) => prevTotal + income);
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
