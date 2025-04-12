@@ -22,7 +22,7 @@ const BinaryRain = () => {
         id: Math.random().toString(36).substring(2, 9),
         digit,
         left,
-        duration: animationDuration
+        duration: animationDuration,
       };
     };
 
@@ -42,7 +42,7 @@ const BinaryRain = () => {
           style={{
             left: `${left}%`,
             animationDuration: `${duration}s`,
-            top: '-20px'
+            top: '-20px',
           }}
         >
           {digit}
@@ -65,15 +65,11 @@ const MollyUI = () => {
     setDealerCost,
   } = useGame();
 
-  const [totalEarned, setTotalEarned] = useState<number>(money);
-  const [totalSold, setTotalSold] = useState<number>(0);
   const [risk, setRisk] = useState<number>(0);
   const [showRaid, setShowRaid] = useState<boolean>(false);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
-  const productName = currentProduct.name;
-  const productEmoji = currentProduct.emoji;
 
   const dealerIncomePerSecond = 0.1;
   const dealerPriceGrowthRate = 1.15;
@@ -81,8 +77,7 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney((prev: number) => prev + income); // Указан тип для prev
-      setTotalEarned((prev: number) => prev + income); // Указан тип для prev
+      setMoney((prev: number) => prev + income); // Явное указание типа
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
@@ -95,34 +90,32 @@ const MollyUI = () => {
 
   const handleBuy = () => {
     if (money >= buyPrice) {
-      setMoney(money - buyPrice);
-      setStaff(staff + 1);
+      setMoney((prev: number) => prev - buyPrice); // Явное указание типа
+      setStaff((prev: number) => prev + 1); // Явное указание типа
     }
   };
 
   const handleSell = () => {
     if (staff > 0) {
-      setMoney(money + sellPrice);
-      setTotalEarned(totalEarned + sellPrice);
-      setStaff(staff - 1);
-      setTotalSold(totalSold + 1);
-      setRisk(risk + 2);
+      setMoney((prev: number) => prev + sellPrice); // Явное указание типа
+      setStaff((prev: number) => prev - 1); // Явное указание типа
+      setRisk((prev: number) => prev + 2); // Явное указание типа
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney(money - dealerCost);
-      setDealers(dealers + 1);
-      setDealerCost(parseFloat((dealerCost * dealerPriceGrowthRate).toFixed(2)));
-      setRisk(risk + 5);
+      setMoney((prev: number) => prev - dealerCost); // Явное указание типа
+      setDealers((prev: number) => prev + 1); // Явное указание типа
+      setDealerCost((prev: number) => parseFloat((prev * dealerPriceGrowthRate).toFixed(2))); // Явное указание типа
+      setRisk((prev: number) => prev + 5); // Явное указание типа
     }
   };
 
   const handleRaidResolution = () => {
     if (staff > 0) {
       const lost = money * 0.5;
-      setMoney(money - lost);
+      setMoney((prev: number) => prev - lost); // Явное указание типа
       setStaff(0);
     }
     setRisk(0);
@@ -148,7 +141,7 @@ const MollyUI = () => {
         </div>
       </div>
       <div className="current-product">
-        <h2 className="product-title">{productEmoji} {productName}</h2>
+        <h2 className="product-title">{currentProduct.emoji} {currentProduct.name}</h2>
         <div className="product-stats">
           <p>In stock: <strong>{staff} units</strong></p>
           <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
