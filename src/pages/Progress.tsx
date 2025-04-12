@@ -1,6 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGame } from "../GameContext";
 import "../styles/Progress.css";
+import "../styles/NeonRain.css";
+
+const NeonRain: React.FC = () => {
+  useEffect(() => {
+    const container = document.querySelector('.neon-rain-container');
+    if (!container) return;
+
+    const createDrop = () => {
+      const drop = document.createElement('div');
+      drop.className = 'neon-drop';
+
+      // Random position and animation
+      const left = Math.random() * 100;
+      const duration = 0.3 + Math.random() * 1.5;
+      const height = 20 + Math.random() * 50;
+      const delay = Math.random();
+
+      drop.style.left = `${left}%`;
+      drop.style.height = `${height}px`;
+      drop.style.animationDuration = `${duration}s`;
+      drop.style.animationDelay = `${delay}s`;
+      drop.style.width = `${0.5 + Math.random() * 2.5}px`;
+
+      container.appendChild(drop);
+
+      setTimeout(() => {
+        drop.remove();
+      }, (duration + delay) * 1000);
+    };
+
+    // Create initial dense rain
+    for (let i = 0; i < 500; i++) {
+      setTimeout(createDrop, i * 20);
+    }
+
+    // Continue creating drops very frequently
+    const interval = setInterval(createDrop, 10);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <div className="neon-rain-container"></div>;
+};
 
 const Progress: React.FC = () => {
   const {
@@ -45,6 +88,7 @@ const Progress: React.FC = () => {
 
   return (
     <div className="progress-container">
+      <NeonRain />
       <h2>📈 Progress</h2>
 
       <div className="tabs">

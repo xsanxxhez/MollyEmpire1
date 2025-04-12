@@ -3,9 +3,11 @@
   padding: 16px;
   color: #0fff50;
   font-family: monospace;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.7);
   overflow-y: auto;
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .progress-container h2 {
@@ -48,12 +50,13 @@
 }
 
 .progress-card, .upgrade-card {
-  background-color: #111;
+  background-color: rgba(17, 17, 17, 0.7);
   border: 1px solid #0fff50;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 0 12px rgba(15, 255, 80, 0.3);
   transition: transform 0.2s;
+  backdrop-filter: blur(3px);
 }
 
 .progress-card:hover, .upgrade-card:hover {
@@ -99,6 +102,7 @@
   color: #00ffff;
   text-shadow: 0 0 5px #00ffff;
 }
+
 .neon-purple-name {
   color: #39FF14;
   text-shadow: 0 0 10px #b026ff, 0 0 10px #b026ff;

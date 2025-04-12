@@ -17,6 +17,47 @@ interface FloatingNotification {
   left: number;
 }
 
+const NeonRain = () => {
+  useEffect(() => {
+    const container = document.querySelector('.neon-rain-container');
+    if (!container) return;
+
+    const createDrop = () => {
+      const drop = document.createElement('div');
+      drop.className = 'neon-drop';
+
+      const left = Math.random() * 100;
+      const duration = 0.5 + Math.random() * 1.5;
+      const height = 25 + Math.random() * 50;
+      const delay = Math.random();
+
+      drop.style.left = `${left}%`;
+      drop.style.height = `${height}px`;
+      drop.style.animationDuration = `${duration}s`;
+      drop.style.animationDelay = `${delay}s`;
+      drop.style.width = `${0.5 + Math.random() * 2.5}px`;
+
+      container.appendChild(drop);
+
+      setTimeout(() => {
+        drop.remove();
+      }, (duration + delay) * 1000);
+    };
+
+    // Create initial dense rain
+    for (let i = 0; i < 300; i++) {
+      setTimeout(createDrop, i * 20);
+    }
+
+    // Continue creating drops very frequently
+    const interval = setInterval(createDrop, 20);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <div className="neon-rain-container"></div>;
+};
+
 const BinaryRain = () => {
   const [digits, setDigits] = useState<BinaryDigit[]>([]);
 
@@ -24,7 +65,7 @@ const BinaryRain = () => {
     const createDigit = (): BinaryDigit => {
       const digit = Math.random() > 0.5 ? '1' : '0';
       const left = Math.random() * 100;
-      const animationDuration = 5 + Math.random() * 10;
+      const animationDuration = 5 + Math.random() * 0;
 
       return {
         id: Math.random().toString(36).substring(2, 9),
@@ -50,7 +91,7 @@ const BinaryRain = () => {
           style={{
             left: `${left}%`,
             animationDuration: `${duration}s`,
-            top: '-20px',
+            top: '-10000000px',
           }}
         >
           {digit}
@@ -157,6 +198,12 @@ const MollyUI = () => {
     }
   };
 
+  const handleDiscardProduct = () => {
+    setStaff(0); // Сбрасываем все товары
+    setRisk(Math.max(0, risk - 5)); // Снижаем риск немного при выбрасывании товара
+    addNotification("All products discarded", '#ff0033');
+  };
+
   const handleRaidResolution = () => {
     if (staff > 0) {
       const lost = money * 0.5;
@@ -169,6 +216,7 @@ const MollyUI = () => {
 
   return (
     <div className="molly-container">
+      <NeonRain />
       <BinaryRain />
       <div className="notifications-container">
         {notifications.map(({ id, text, color, top, left }) => (
@@ -230,6 +278,12 @@ const MollyUI = () => {
             disabled={money < dealerCost}
           >
             Hire dealer (${dealerCost.toFixed(2)})
+          </button>
+          <button
+            className="action-btn discard-btn"
+            onClick={handleDiscardProduct}
+          >
+            Discard Product
           </button>
           <button
             className="action-btn stats-btn"

@@ -502,3 +502,17 @@ body {
     font-size: 12px;
   }
 }
+.action-btn.discard-btn {
+  background: rgba(255, 0, 0, 0.5);
+  color: var(--neon-red);
+  border: 1px solid var(--neon-red);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.action-btn.discard-btn:hover:not(:disabled) {
+  background: rgba(255, 0, 0, 0.7);
+  box-shadow: 0 0 15px var(--neon-red);
+}
+
