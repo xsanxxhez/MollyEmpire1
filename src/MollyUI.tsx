@@ -81,8 +81,8 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney((prev: number) => prev + income);
-      setTotalEarned((prev: number) => prev + income);
+      setMoney(prev => prev + income); // Здесь передается функция
+      setTotalEarned(prev => prev + income); // Здесь передается функция
     }, 1000);
     return () => clearInterval(interval);
   }, [dealers, setMoney]);
