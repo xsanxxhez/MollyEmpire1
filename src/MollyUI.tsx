@@ -1,6 +1,50 @@
+// MollyUI.jsx
 import { useState, useEffect } from "react";
 import "./MollyUI.css";
 import { useGame } from "./GameContext";
+
+const BinaryRain = () => {
+  const [digits, setDigits] = useState([]);
+
+  useEffect(() => {
+    const createDigit = () => {
+      const digit = Math.random() > 0.5 ? '1' : '0';
+      const left = Math.random() * 100;
+      const animationDuration = 5 + Math.random() * 10;
+
+      return {
+        id: Math.random().toString(36).substr(2, 9),
+        digit,
+        left,
+        duration: animationDuration
+      };
+    };
+
+    const interval = setInterval(() => {
+      setDigits(prev => [...prev.slice(-50), createDigit()]);
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="binary-code">
+      {digits.map(({id, digit, left, duration}) => (
+        <div
+          key={id}
+          className="binary-digit"
+          style={{
+            left: `${left}%`,
+            animationDuration: `${duration}s`,
+            top: '-20px'
+          }}
+        >
+          {digit}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const MollyUI = () => {
   const {
@@ -13,14 +57,17 @@ const MollyUI = () => {
     setDealers,
     dealerCost,
     setDealerCost,
+    unlocked,
+    unlockProduct,
+    productList
   } = useGame();
 
-  const [totalEarned, setTotalEarned] = useState<number>(money);
-  const [totalSold, setTotalSold] = useState<number>(0);
-  const [referrals] = useState<number>(3);
-  const [risk, setRisk] = useState<number>(0);
-  const [showRaid, setShowRaid] = useState<boolean>(false);
-  const [showStats, setShowStats] = useState<boolean>(false);
+  const [totalEarned, setTotalEarned] = useState(money);
+  const [totalSold, setTotalSold] = useState(0);
+  const [referrals] = useState(3);
+  const [risk, setRisk] = useState(0);
+  const [showRaid, setShowRaid] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
@@ -33,11 +80,11 @@ const MollyUI = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const income = dealers * dealerIncomePerSecond;
-      setMoney(money + income);
-      setTotalEarned(totalEarned + income);
+      setMoney(prev => prev + income);
+      setTotalEarned(prev => prev + income);
     }, 1000);
     return () => clearInterval(interval);
-  }, [dealers, money, totalEarned]);
+  }, [dealers, setMoney]);
 
   useEffect(() => {
     if (risk >= 100 && !showRaid) {
@@ -85,53 +132,57 @@ const MollyUI = () => {
 
   return (
     <div className="molly-container">
-      <div className="molly-header-column">
-        <div className="molly-header-top-row">
-          <div className="molly-title neon-glow flicker">$MOLLY</div>
-          <div className="money-counter neon-glow">${money.toFixed(2)}</div>
+      <BinaryRain />
+
+      <div className="header-section">
+        <div className="title-money-wrapper">
+          <h1 className="game-title">$MOLLY <span className="money-amount">{money.toFixed(2)}</span></h1>
         </div>
 
-        <div className="info-blocks">
-          <button className="info-card neon-block" onClick={() => setShowStats(!showStats)}>
-            📊 Stats: <span>{totalSold}</span>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-label">Risk:</span>
+            <span className={`stat-value ${risk >= 50 ? "danger" : ""}`}>{risk}%</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Dealers:</span>
+            <span className="stat-value">{dealers}</span>
+          </div>
+        </div>
+      </div>
+
+
+      <div className="current-product">
+        <h2 className="product-title">{productEmoji} {productName}</h2>
+        <div className="product-stats">
+          <p>In stock: <strong>{staff} units</strong></p>
+          <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
+        </div>
+
+        <div className="action-buttons">
+          <button
+            className="action-btn buy-btn"
+            onClick={handleBuy}
+            disabled={money < buyPrice}
+          >
+            Buy 1 unit (${buyPrice.toFixed(2)})
           </button>
-          <div className="info-card neon-block">
-            ☣ Risk: <span className={risk >= 50 ? "danger" : ""}>{risk}%</span>
-          </div>
-          <div className="info-card neon-block">
-            👥 Dealers: <span>{dealers}</span>
-          </div>
+          <button
+            className="action-btn sell-btn"
+            onClick={handleSell}
+            disabled={staff <= 0}
+          >
+            Sell 1 unit (+${sellPrice.toFixed(2)})
+          </button>
+          <button
+            className="action-btn dealer-btn"
+            onClick={handleHireDealer}
+            disabled={money < dealerCost}
+          >
+            Hire dealer (${dealerCost.toFixed(2)})
+          </button>
         </div>
       </div>
-
-      <div className="drug-info">
-        <div className="drug-title">{productEmoji} <span>{productName}</span></div>
-        <p>Your stock: <span>{staff} units</span></p>
-        <p>Buy: <span>{buyPrice}</span> / Sell: <span>{sellPrice}</span></p>
-      </div>
-
-      <button className="action-button green" onClick={handleBuy} disabled={money < buyPrice}>
-        Buy 1 unit ({buyPrice})
-      </button>
-
-      <button className="action-button blue" onClick={handleSell} disabled={staff <= 0}>
-        Sell 1 unit (+{sellPrice})
-      </button>
-
-      <button className="action-button pink" onClick={handleHireDealer} disabled={money < dealerCost}>
-        Hire dealer (${dealerCost.toFixed(2)})
-      </button>
-
-      {showStats && (
-        <div className="stats-window">
-          <h3>📊 Stats</h3>
-          <p>Total earned: <strong>${totalEarned.toFixed(2)}</strong></p>
-          <p>Total sold: <strong>{totalSold} units</strong></p>
-          <p>Dealers hired: <strong>{dealers}</strong></p>
-          <p>Referrals: <strong>{referrals}</strong></p>
-          <p>Income per minute: <strong>${incomePerMinute}</strong></p>
-        </div>
-      )}
 
       {showRaid && (
         <div className="raid-modal">
@@ -148,7 +199,7 @@ const MollyUI = () => {
                 <p>You were lucky this time. Just a warning.</p>
               </>
             )}
-            <button className="action-button red" onClick={handleRaidResolution}>
+            <button className="action-btn raid-btn" onClick={handleRaidResolution}>
               Continue
             </button>
           </div>

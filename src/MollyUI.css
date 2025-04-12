@@ -1,221 +1,310 @@
-.molly-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16px;
+/* MollyUI.css */
+:root {
+  --neon-green: #0fff50;
+  --neon-blue: #00ffff;
+  --neon-pink: #ff00ff;
+  --neon-purple: #9d00ff;
+  --neon-red: #ff0033;
+  --dark-bg: #0a0a0a;
+  --darker-bg: #050505;
+  --container-bg: rgba(10, 20, 10, 0.3);
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
   background-color: #000;
-  color: #0fff50;
+  color: var(--neon-green);
   font-family: 'Courier New', monospace;
-  overflow-y: auto;
+  line-height: 1.5;
+}
+
+/* Binary rain effect */
+.binary-code {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  gap: 20px;
+  overflow: hidden;
+  z-index: 0;
+  opacity: 0.1;
+  pointer-events: none;
 }
 
-.molly-header-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  width: 100%;
-}
-
-.molly-header-top {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.molly-title {
-  font-size: 32px;
-  font-weight: bold;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.money-counter {
-  font-size: 18px;
-  font-weight: bold;
-  color: #00ffcc;
-  text-shadow: 0 0 10px #00ffcc;
-}
-
-.info-blocks {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 100%;
-}
-
-.info-card {
-  flex: 1;
-  min-width: 100px;
-  text-align: center;
-  padding: 10px 12px;
-  border-radius: 10px;
+.binary-digit {
+  position: absolute;
+  color: var(--neon-green);
   font-size: 14px;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  line-height: 1;
+  animation: fall linear infinite;
 }
 
-.neon-block {
-  background: rgba(15, 255, 80, 0.07);
-  border: 1px solid #0fff50;
-  color: #0fff50;
-  text-shadow: 0 0 6px #0fff50;
-  transition: all 0.3s;
+@keyframes fall {
+  to { transform: translateY(100vh); }
 }
 
-.neon-block:hover {
-  background-color: rgba(15, 255, 80, 0.1);
-  transform: scale(1.03);
+/* Main container */
+.molly-container {
+  max-width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
-.neon-glow {
-  text-shadow:
-    0 0 5px #0fff50,
-    0 0 10px rgba(15, 255, 80, 0.5),
-    0 0 20px rgba(15, 255, 80, 0.2);
-  color: #0fff50;
-}
-
-.flicker {
-  animation: flickerAnim 2.5s infinite alternate;
-}
-
-@keyframes flickerAnim {
-  0% { opacity: 1; }
-  20% { opacity: 0.9; }
-  40% { opacity: 0.95; }
-  60% { opacity: 1; }
-  80% { opacity: 0.88; }
-  100% { opacity: 1; }
-}
-
-.danger {
-  color: red;
-  text-shadow: 0 0 5px red;
-}
-
-/* === Drug Info & Buttons === */
-
-.drug-info {
-  width: 100%;
-  max-width: 400px;
-  background-color: #111;
-  border: 1px solid #0fff50;
+/* Header section */
+.header-section {
+  background: var(--container-bg);
+  border: 1px solid var(--neon-green);
   border-radius: 10px;
-  padding: 16px;
-  box-shadow: 0 0 10px rgba(15, 255, 80, 0.2);
-  text-align: left;
+  padding: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 0 10px rgba(15, 255, 80, 0.1);
 }
 
-.drug-title {
-  font-size: 18px;
-  font-weight: bold;
-  text-shadow: 0 0 5px #0fff50;
+.title-money-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
-.drug-info p span {
-  color: #0fff50;
+.game-title {
+  font-size: 32px;
   font-weight: bold;
-  text-shadow: 0 0 4px #0fff50;
+  color: var(--neon-green);
+  text-shadow: 0 0 5px var(--neon-green);
+  letter-spacing: 1px;
 }
 
-.action-button {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px;
-  border-radius: 10px;
+.money-amount {
+  font-size: 32px;
+  color: var(--neon-green);
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+.stats-row {
+  display: flex;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.stat-label {
+  color: var(--neon-green);
+  font-size: 14px;
+}
+
+.stat-value {
+  color: var(--neon-green);
   font-weight: bold;
-  font-family: monospace;
+  font-size: 16px;
+}
+
+.danger {
+  color: var(--neon-red) !important;
+  text-shadow: 0 0 5px var(--neon-red);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* Products list */
+.products-list {
+  background: var(--container-bg);
+  border: 1px solid var(--neon-blue);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  margin: 5px 0;
+  border-radius: 5px;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.product-item:hover {
+  background: rgba(15, 255, 80, 0.1);
+}
+
+.product-item.active {
+  background: rgba(0, 255, 255, 0.1);
+  border-left: 3px solid var(--neon-blue);
+}
+
+.product-item.locked {
+  opacity: 0.5;
+}
+
+.product-check {
+  color: var(--neon-green);
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.product-lock {
+  color: var(--neon-red);
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.product-name {
+  font-size: 16px;
+}
+
+/* Current product */
+.current-product {
+  background: var(--container-bg);
+  border: 1px solid var(--neon-purple);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.product-title {
+  color: var(--neon-blue);
+  font-size: 22px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.product-stats {
+  margin-bottom: 15px;
+}
+
+.product-stats p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.product-stats strong {
+  color: var(--neon-green);
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-btn {
+  padding: 12px;
+  border-radius: 5px;
   border: none;
   font-size: 16px;
-  margin-top: 6px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
 }
 
-.action-button.green {
-  background-color: #002200;
-  color: #0fff50;
-  border: 1px solid #0fff50;
-  text-shadow: 0 0 5px #0fff50;
+.action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.action-button.blue {
-  background-color: #001122;
-  color: #00ffff;
-  border: 1px solid #00ffff;
-  text-shadow: 0 0 5px #00ffff;
+.buy-btn {
+  background: rgba(0, 30, 0, 0.5);
+  color: var(--neon-green);
+  border: 1px solid var(--neon-green);
 }
 
-.action-button.pink {
-  background-color: #1a001a;
-  color: #ff00ff;
-  border: 1px solid #ff00ff;
-  text-shadow: 0 0 5px #ff00ff;
+.sell-btn {
+  background: rgba(0, 15, 30, 0.5);
+  color: var(--neon-blue);
+  border: 1px solid var(--neon-blue);
 }
 
-.action-button.red {
-  background-color: #330000;
-  color: red;
-  border: 1px solid red;
-  text-shadow: 0 0 5px red;
+.dealer-btn {
+  background: rgba(30, 0, 30, 0.5);
+  color: var(--neon-pink);
+  border: 1px solid var(--neon-pink);
 }
 
-.action-button:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 10px currentColor;
+.action-btn:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px currentColor;
 }
 
-/* === Stats Modal === */
-
-.stats-window {
-  width: 100%;
-  max-width: 400px;
-  background-color: #111;
-  border: 1px solid #0fff50;
-  border-radius: 10px;
-  padding: 16px;
-  margin-top: 12px;
-  box-shadow: 0 0 10px rgba(15, 255, 80, 0.2);
-}
-
-.stats-window p {
-  margin: 6px 0;
-}
-
-/* === Police Modal === */
-
+/* Raid modal */
 .raid-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 100;
 }
 
 .raid-content {
-  background-color: #1a1a1a;
-  padding: 24px;
-  border: 2px solid red;
-  border-radius: 12px;
-  color: #fff;
+  background: rgba(20, 0, 0, 0.9);
+  border: 1px solid var(--neon-red);
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 90%;
+  width: 400px;
   text-align: center;
-  width: 90%;
-  max-width: 360px;
-  box-shadow: 0 0 15px red;
+  animation: pulse 1.5s infinite;
+}
+
+.raid-content h3 {
+  color: var(--neon-red);
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.raid-content p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.raid-content strong {
+  color: var(--neon-red);
+}
+
+.raid-btn {
+  background: rgba(50, 0, 0, 0.7);
+  color: var(--neon-red);
+  border: 1px solid var(--neon-red);
+  margin-top: 15px;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .game-title, .money-amount {
+    font-size: 28px;
+  }
+
+  .product-title {
+    font-size: 20px;
+  }
+
+  .action-btn {
+    padding: 10px;
+    font-size: 14px;
+  }
 }
