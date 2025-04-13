@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useGame } from "../GameContext";
 import "../styles/Progress.css";
-import "../styles/NeonRain.css";
 
-const NeonRain: React.FC = () => {
+const NeonRain = () => {
   useEffect(() => {
     const container = document.querySelector('.neon-rain-container');
     if (!container) return;
@@ -12,17 +11,18 @@ const NeonRain: React.FC = () => {
       const drop = document.createElement('div');
       drop.className = 'neon-drop';
 
-      // Random position and animation
-      const left = Math.random() * 100;
-      const duration = 0.3 + Math.random() * 1.5;
-      const height = 20 + Math.random() * 50;
-      const delay = Math.random();
+      const left = Math.random() * 120;
+      const duration = 3 + Math.random() * 3; // Увеличил длительность падения
+      const height = 15 + Math.random() * 30; // Уменьшил высоту капель
+      const delay = Math.random() * 2;
+      const opacity = 0.3 + Math.random() * 0.5; // Добавил вариативность прозрачности
 
       drop.style.left = `${left}%`;
       drop.style.height = `${height}px`;
       drop.style.animationDuration = `${duration}s`;
       drop.style.animationDelay = `${delay}s`;
-      drop.style.width = `${0.5 + Math.random() * 2.5}px`;
+      drop.style.width = `${0.3 + Math.random() * 1}px`; // Уменьшил ширину капель
+      drop.style.opacity = `${opacity}`;
 
       container.appendChild(drop);
 
@@ -31,13 +31,13 @@ const NeonRain: React.FC = () => {
       }, (duration + delay) * 1000);
     };
 
-    // Create initial dense rain
-    for (let i = 0; i < 500; i++) {
-      setTimeout(createDrop, i * 20);
+    // Создаем начальные капли более редкими
+    for (let i = 0; i < 250; i++) {
+      setTimeout(createDrop, i * 250);
     }
 
-    // Continue creating drops very frequently
-    const interval = setInterval(createDrop, 10);
+    // Увеличил интервал между созданием новых капель
+    const interval = setInterval(createDrop, 50);
 
     return () => clearInterval(interval);
   }, []);
@@ -54,8 +54,8 @@ const Progress: React.FC = () => {
     setCurrentProduct,
     money,
     setMoney,
-    riskGain,
-    setRiskGain,
+    productStock,
+    setProductStock,
   } = useGame();
 
   const [activeTab, setActiveTab] = useState<"products" | "riskReduction">("products");
@@ -112,11 +112,13 @@ const Progress: React.FC = () => {
             const isUnlocked = unlocked.includes(product.name);
             const isCurrent = currentProduct.name === product.name;
             const canUnlock = money >= product.unlockPrice;
+            const inStock = productStock[product.name] || 0;
 
             return (
               <div key={product.name} className={`progress-card ${!isUnlocked ? "locked" : ""}`}>
                 <h3 className="neon-purple-name">{product.name}</h3>
                 <p>Buy: ${product.buyPrice} / Sell: ${product.sellPrice}</p>
+                <p>In stock: {inStock} oz</p>
                 {!isUnlocked && (
                   <button
                     disabled={!canUnlock}

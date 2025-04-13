@@ -26,16 +26,18 @@ const NeonRain = () => {
       const drop = document.createElement('div');
       drop.className = 'neon-drop';
 
-      const left = Math.random() * 100;
-      const duration = 0.5 + Math.random() * 1.5;
-      const height = 25 + Math.random() * 50;
-      const delay = Math.random();
+      const left = Math.random() * 120;
+      const duration = 3 + Math.random() * 3; // Увеличил длительность падения
+      const height = 15 + Math.random() * 30; // Уменьшил высоту капель
+      const delay = Math.random() * 2;
+      const opacity = 0.3 + Math.random() * 0.5; // Добавил вариативность прозрачности
 
       drop.style.left = `${left}%`;
       drop.style.height = `${height}px`;
       drop.style.animationDuration = `${duration}s`;
       drop.style.animationDelay = `${delay}s`;
-      drop.style.width = `${0.5 + Math.random() * 2.5}px`;
+      drop.style.width = `${0.4 + Math.random() * 1}px`; // Уменьшил ширину капель
+      drop.style.opacity = `${opacity}`;
 
       container.appendChild(drop);
 
@@ -44,13 +46,13 @@ const NeonRain = () => {
       }, (duration + delay) * 1000);
     };
 
-    // Create initial dense rain
-    for (let i = 0; i < 300; i++) {
-      setTimeout(createDrop, i * 20);
+    // Создаем начальные капли более редкими
+    for (let i = 0; i < 150; i++) {
+      setTimeout(createDrop, i * 100);
     }
 
-    // Continue creating drops very frequently
-    const interval = setInterval(createDrop, 20);
+    // Увеличил интервал между созданием новых капель
+    const interval = setInterval(createDrop, 150);
 
     return () => clearInterval(interval);
   }, []);
@@ -199,8 +201,8 @@ const MollyUI = () => {
   };
 
   const handleDiscardProduct = () => {
-    setStaff(0); // Сбрасываем все товары
-    setRisk(Math.max(0, risk - 5)); // Снижаем риск немного при выбрасывании товара
+    setStaff(0);
+    setRisk(Math.max(0, risk - 5));
     addNotification("All products discarded", '#ff0033');
   };
 

@@ -12,7 +12,6 @@
   --container-bg: rgba(10, 20, 10, 0.3);
 }
 
-/* Base styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -26,7 +25,31 @@ body {
   line-height: 1.5;
 }
 
-/* Binary rain effect */
+/* Обновленный стиль для неонового дождя */
+.neon-rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.neon-drop {
+  position: absolute;
+  background: linear-gradient(to bottom,
+    rgba(15, 255, 80, 0.8) 0%,
+    rgba(15, 255, 80, 0) 100%);
+  animation: neon-fall linear forwards;
+  transform: translateY(-100%);
+}
+
+@keyframes neon-fall {
+  to { transform: translateY(100vh); }
+}
+
 .binary-code {
   position: fixed;
   top: 0;
@@ -50,7 +73,6 @@ body {
   to { transform: translateY(100vh); }
 }
 
-/* Floating notifications */
 .notifications-container {
   position: fixed;
   top: 0;
@@ -81,7 +103,6 @@ body {
   100% { opacity: 0; }
 }
 
-/* Main container */
 .molly-container {
   max-width: 100%;
   padding: 20px;
@@ -90,7 +111,6 @@ body {
   z-index: 1;
 }
 
-/* Header section */
 .header-section {
   background: var(--container-bg);
   border: 1px solid var(--neon-green);
@@ -116,7 +136,6 @@ body {
   text-shadow: 0 0 5px var(--neon-green);
 }
 
-/* Обновленные стили для секции статуса */
 .status-section {
   margin-bottom: 20px;
 }
@@ -218,7 +237,6 @@ body {
   }
 }
 
-/* Крутой неоновый дизайн для окна статистики */
 .stats-modal {
   position: fixed;
   top: 0;
@@ -234,8 +252,6 @@ body {
   padding: 10px;
   overflow-y: auto;
 }
-
-
 
 .stats-content {
   background-color: rgba(10, 10, 30, 0.9);
@@ -371,7 +387,6 @@ body {
   background: rgba(100, 0, 100, 0.7);
 }
 
-/* Остальные стили (для продукта, кнопок, raid-modal) остаются без изменений */
 .current-product {
   background: var(--container-bg);
   border: 1px solid var(--neon-purple);
@@ -475,7 +490,6 @@ body {
   animation: pulse 1.5s infinite;
 }
 
-/* Адаптивность */
 @media (max-width: 480px) {
   .game-title, .money-amount {
     font-size: 28px;
@@ -502,6 +516,7 @@ body {
     font-size: 12px;
   }
 }
+
 .action-btn.discard-btn {
   background: rgba(255, 0, 0, 0.5);
   color: var(--neon-red);
@@ -515,4 +530,3 @@ body {
   background: rgba(255, 0, 0, 0.7);
   box-shadow: 0 0 15px var(--neon-red);
 }
-

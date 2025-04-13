@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
+// Продукты в игре
 export interface Product {
   name: string;
   unlockPrice: number;
@@ -33,7 +34,8 @@ interface GameContextType {
   currentProduct: Product;
   setCurrentProduct: (p: Product) => void;
   productList: Product[];
-
+  productStock: { [key: string]: number }; // Склад для каждого продукта
+  setProductStock: (stock: { [key: string]: number }) => void;
   staff: number;
   setStaff: (v: number) => void;
   dealers: number;
@@ -56,6 +58,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [currentProduct, setCurrentProduct] = useState<Product>(
     productList.find(p => p.name === savedData.currentProduct) || productList[0]
   );
+  const [productStock, setProductStock] = useState<{ [key: string]: number }>(
+    savedData.productStock ?? productList.reduce((acc, product) => {
+      acc[product.name] = 0; // Изначально склад пуст
+      return acc;
+    }, {} as { [key: string]: number })
+  );
   const [staff, setStaff] = useState<number>(savedData.staff ?? 0);
   const [dealers, setDealers] = useState<number>(savedData.dealers ?? 0);
   const [dealerCost, setDealerCost] = useState<number>(savedData.dealerCost ?? 3);
@@ -77,6 +85,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         money,
         unlocked,
         currentProduct: currentProduct.name,
+        productStock,
         staff,
         dealers,
         dealerCost,
@@ -84,7 +93,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         riskGain,
       })
     );
-  }, [money, unlocked, currentProduct, staff, dealers, dealerCost, risk, riskGain]);
+  }, [money, unlocked, currentProduct, productStock, staff, dealers, dealerCost, risk, riskGain]);
 
   return (
     <GameContext.Provider
@@ -96,6 +105,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         currentProduct,
         setCurrentProduct,
         productList,
+        productStock,
+        setProductStock,
         staff,
         setStaff,
         dealers,
