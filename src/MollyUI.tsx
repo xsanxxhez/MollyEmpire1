@@ -24,7 +24,6 @@ const NeonRain = () => {
       drop.style.width = `${0.4 + Math.random() * 1}px`;
       drop.style.opacity = `${opacity}`;
 
-      // Случайный цвет для капли
       const colors = ['#0fff50', '#00ffff', '#ff00ff', '#9d00ff'];
       const color = colors[Math.floor(Math.random() * colors.length)];
       drop.style.background = `linear-gradient(to bottom, ${color} 0%, transparent 100%)`;
@@ -152,14 +151,16 @@ const MollyUI = () => {
   };
 
   useEffect(() => {
+    let currentMoney = money;
     const interval = setInterval(() => {
       const income = dealers * 0.1;
       if (income > 0) {
-        setMoney((prev: number) => prev + income); // Указываем тип number для prev
+        currentMoney += income;
+        setMoney(currentMoney);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [dealers, setMoney]);
+  }, [dealers, money, setMoney]);
 
   useEffect(() => {
     if (risk >= 100 && !showRaid) {
@@ -169,38 +170,38 @@ const MollyUI = () => {
 
   const handleBuy = () => {
     if (money >= currentProduct.buyPrice) {
-      setMoney((prev: number) => prev - currentProduct.buyPrice); // Указываем тип number для prev
+      setMoney(money - currentProduct.buyPrice);
       const newStock = currentStock + 1;
       setCurrentStock(newStock);
       setProductStock({
         ...productStock,
         [currentProduct.name]: newStock
       });
-      setRisk((prev: number) => Math.min(100, prev + riskGain)); // Указываем тип number для prev
+      setRisk(Math.min(100, risk + riskGain));
       addNotification(`+1 oz.`, '#0fff50');
     }
   };
 
   const handleSell = () => {
     if (currentStock > 0) {
-      setMoney((prev: number) => prev + currentProduct.sellPrice); // Указываем тип number для prev
+      setMoney(money + currentProduct.sellPrice);
       const newStock = currentStock - 1;
       setCurrentStock(newStock);
       setProductStock({
         ...productStock,
         [currentProduct.name]: newStock
       });
-      setRisk((prev: number) => Math.min(100, prev + riskGain * 2)); // Указываем тип number для prev
+      setRisk(Math.min(100, risk + riskGain * 2));
       addNotification(`+$${currentProduct.sellPrice.toFixed(2)}`, '#00ffff');
     }
   };
 
   const handleHireDealer = () => {
     if (money >= dealerCost) {
-      setMoney((prev: number) => prev - dealerCost); // Указываем тип number для prev
-      setDealers((prev: number) => prev + 1); // Указываем тип number для prev
-      setDealerCost((prev: number) => parseFloat((prev * 1.15).toFixed(2))); // Указываем тип number для prev
-      setRisk((prev: number) => Math.min(100, prev + riskGain * 5)); // Указываем тип number для prev
+      setMoney(money - dealerCost);
+      setDealers(dealers + 1);
+      setDealerCost(parseFloat((dealerCost * 1.15).toFixed(2)));
+      setRisk(Math.min(100, risk + riskGain * 5));
       addNotification('+1 Dealer', '#ff00ff');
     }
   };
@@ -211,14 +212,14 @@ const MollyUI = () => {
       ...productStock,
       [currentProduct.name]: 0
     });
-    setRisk((prev: number) => Math.max(0, prev - 5)); // Указываем тип number для prev
+    setRisk(Math.max(0, risk - 5));
     addNotification("Inventory cleared", '#ff0033');
   };
 
   const handleRaidResolution = () => {
     if (currentStock > 0) {
       const lost = money * 0.5;
-      setMoney((prev: number) => prev - lost); // Указываем тип number для prev
+      setMoney(money - lost);
       setCurrentStock(0);
       setProductStock({
         ...productStock,
