@@ -2,45 +2,97 @@ import React, { useState, useEffect } from "react";
 import { useGame } from "../GameContext";
 import "../styles/Progress.css";
 
-const NeonRain = () => {
+const MatrixGrid = () => {
   useEffect(() => {
-    const container = document.querySelector('.neon-rain-container');
+    const container = document.querySelector('.matrix-grid-container');
     if (!container) return;
 
-    const createDrop = () => {
-      const drop = document.createElement('div');
-      drop.className = 'neon-drop';
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-      const left = Math.random() * 120;
-      const duration = 3 + Math.random() * 3;
-      const height = 15 + Math.random() * 30;
-      const delay = Math.random() * 2;
-      const opacity = 0.3 + Math.random() * 0.5;
+    container.appendChild(canvas);
 
-      drop.style.left = `${left}%`;
-      drop.style.height = `${height}px`;
-      drop.style.animationDuration = `${duration}s`;
-      drop.style.animationDelay = `${delay}s`;
-      drop.style.width = `${0.3 + Math.random() * 1}px`;
-      drop.style.opacity = `${opacity}`;
+    const resize = () => {
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
 
-      container.appendChild(drop);
+    const points = Array.from({length: 50}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      dx: (Math.random() - 0.5) * 0.5,
+      dy: (Math.random() - 0.5) * 0.5
+    }));
 
-      setTimeout(() => {
-        drop.remove();
-      }, (duration + delay) * 1000);
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(0, 255, 255, 0.1)';
+      ctx.lineWidth = 0.3;
+
+      points.forEach((p1, i) => {
+        p1.x += p1.dx;
+        p1.y += p1.dy;
+        if (p1.x < 0 || p1.x > canvas.width) p1.dx *= -1;
+        if (p1.y < 0 || p1.y > canvas.height) p1.dy *= -1;
+
+        points.slice(i + 1).forEach(p2 => {
+          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+          if (dist < 150) {
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        });
+      });
+
+      requestAnimationFrame(draw);
     };
 
-    for (let i = 0; i < 250; i++) {
-      setTimeout(createDrop, i * 250);
-    }
+    draw();
+    return () => {
+      window.removeEventListener('resize', resize);
+      container.removeChild(canvas);
+    };
+  }, []);
 
-    const interval = setInterval(createDrop, 50);
+  return <div className="matrix-grid-container"></div>;
+};
+
+const BinaryRain = () => {
+  const [digits, setDigits] = useState<string[]>([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newDigit = Math.random() > 0.5 ? '1' : '0';
+      setDigits(prev => [...prev.slice(-100), newDigit]);
+    }, 50);
 
     return () => clearInterval(interval);
   }, []);
 
-  return <div className="neon-rain-container"></div>;
+  return (
+    <div className="binary-rain">
+      {digits.map((digit, i) => (
+        <span
+          key={i}
+          className="binary-digit"
+          style={{
+            opacity: Math.random() * 0.3 + 0.1,
+            left: `${Math.random() * 100}%`,
+            animationDuration: `${Math.random() * 5 + 3}s`
+          }}
+        >
+          {digit}
+        </span>
+      ))}
+    </div>
+  );
 };
 
 const Progress: React.FC = () => {
@@ -83,27 +135,34 @@ const Progress: React.FC = () => {
   };
 
   return (
-    <div className="progress-container">
-      <NeonRain />
-      <h2>📈 Progress</h2>
+    <div className="cyber-progress">
+      <MatrixGrid />
+      <BinaryRain />
 
-      <div className="tabs">
+      <div className="cyber-header">
+        <h2 className="glitch" data-text="PROGRESS MATRIX">PROGRESS MATRIX</h2>
+        <div className="scanline"></div>
+      </div>
+
+      <div className="cyber-tabs">
         <button
-          className={`tab-button ${activeTab === "products" ? "active" : ""}`}
+          className={`cyber-tab ${activeTab === "products" ? "active" : ""}`}
           onClick={() => setActiveTab("products")}
         >
-          Products
+          <span className="cyber-tab-text">PRODUCT DATABASE</span>
+          <span className="cyber-tab-glow"></span>
         </button>
         <button
-          className={`tab-button ${activeTab === "riskReduction" ? "active" : ""}`}
+          className={`cyber-tab ${activeTab === "riskReduction" ? "active" : ""}`}
           onClick={() => setActiveTab("riskReduction")}
         >
-          Risk Reduction
+          <span className="cyber-tab-text">SECURITY UPGRADES</span>
+          <span className="cyber-tab-glow"></span>
         </button>
       </div>
 
       {activeTab === "products" && (
-        <div className="product-list">
+        <div className="cyber-grid">
           {productList.map((product) => {
             const isUnlocked = unlocked.includes(product.name);
             const isCurrent = currentProduct.name === product.name;
@@ -111,22 +170,52 @@ const Progress: React.FC = () => {
             const inStock = productStock[product.name] || 0;
 
             return (
-              <div key={product.name} className={`progress-card ${!isUnlocked ? "locked" : ""}`}>
-                <h3 className="neon-purple-name">{product.name}</h3>
-                <p>Buy: ${product.buyPrice} / Sell: ${product.sellPrice}</p>
-                <p>In stock: {inStock} oz</p>
-                {!isUnlocked && (
-                  <button
-                    disabled={!canUnlock}
-                    onClick={() => handleUnlock(product)}
-                  >
-                    Unlock (${product.unlockPrice})
-                  </button>
-                )}
-                {isUnlocked && !isCurrent && (
-                  <button onClick={() => setCurrentProduct(product)}>Use</button>
-                )}
-                {isCurrent && <span className="current-label">In Use</span>}
+              <div
+                key={product.name}
+                className={`cyber-card ${!isUnlocked ? "locked" : ""} ${isCurrent ? "active" : ""}`}
+              >
+                <div className="card-header">
+                  <h3 className="cyber-card-title">{product.name}</h3>
+                  <div className="card-corner"></div>
+                </div>
+                <div className="card-content">
+                  <div className="cyber-stat">
+                    <span className="stat-label">BUY:</span>
+                    <span className="stat-value">${product.buyPrice}</span>
+                  </div>
+                  <div className="cyber-stat">
+                    <span className="stat-label">SELL:</span>
+                    <span className="stat-value">${product.sellPrice}</span>
+                  </div>
+                  <div className="cyber-stat">
+                    <span className="stat-label">STOCK:</span>
+                    <span className="stat-value">{inStock} oz</span>
+                  </div>
+                </div>
+                <div className="card-footer">
+                  {!isUnlocked ? (
+                    <button
+                      className={`cyber-button unlock-btn ${canUnlock ? "active" : ""}`}
+                      disabled={!canUnlock}
+                      onClick={() => handleUnlock(product)}
+                    >
+                      <span className="btn-text">UNLOCK (${product.unlockPrice})</span>
+                      <span className="btn-glow"></span>
+                    </button>
+                  ) : isCurrent ? (
+                    <div className="active-indicator">
+                      <span>ACTIVE</span>
+                    </div>
+                  ) : (
+                    <button
+                      className="cyber-button use-btn"
+                      onClick={() => setCurrentProduct(product)}
+                    >
+                      <span className="btn-text">ACTIVATE</span>
+                      <span className="btn-glow"></span>
+                    </button>
+                  )}
+                </div>
               </div>
             );
           })}
@@ -134,22 +223,40 @@ const Progress: React.FC = () => {
       )}
 
       {activeTab === "riskReduction" && (
-        <div className="upgrade-list">
+        <div className="cyber-grid">
           {upgradeData.map((upgrade, index) => {
             const canAfford = money >= upgrade.cost;
 
             return (
-              <div key={upgrade.name} className="upgrade-card">
-                <h3 className="neon-purple-name">{upgrade.name}</h3>
-                <p>Cost: ${upgrade.cost}</p>
-                <p>Risk Gain Reduction: -{upgrade.reduction}% per action</p>
-                <p>Current Level: {upgrade.bought}</p>
-                <button
-                  disabled={!canAfford}
-                  onClick={() => handleUpgrade(index)}
-                >
-                  Buy Upgrade
-                </button>
+              <div key={upgrade.name} className="cyber-card upgrade">
+                <div className="card-header">
+                  <h3 className="cyber-card-title">{upgrade.name}</h3>
+                  <div className="card-corner"></div>
+                </div>
+                <div className="card-content">
+                  <div className="cyber-stat">
+                    <span className="stat-label">COST:</span>
+                    <span className="stat-value">${upgrade.cost}</span>
+                  </div>
+                  <div className="cyber-stat">
+                    <span className="stat-label">REDUCTION:</span>
+                    <span className="stat-value">-{upgrade.reduction}%</span>
+                  </div>
+                  <div className="cyber-stat">
+                    <span className="stat-label">LEVEL:</span>
+                    <span className="stat-value">{upgrade.bought}</span>
+                  </div>
+                </div>
+                <div className="card-footer">
+                  <button
+                    className={`cyber-button upgrade-btn ${canAfford ? "active" : ""}`}
+                    disabled={!canAfford}
+                    onClick={() => handleUpgrade(index)}
+                  >
+                    <span className="btn-text">UPGRADE</span>
+                    <span className="btn-glow"></span>
+                  </button>
+                </div>
               </div>
             );
           })}

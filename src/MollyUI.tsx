@@ -1,3 +1,4 @@
+// MollyUI.tsx
 import { useState, useEffect } from "react";
 import "./MollyUI.css";
 import { useGame } from "./GameContext";
@@ -65,7 +66,7 @@ const BinaryRain = () => {
     const createDigit = (): BinaryDigit => {
       const digit = Math.random() > 0.5 ? '1' : '0';
       const left = Math.random() * 100;
-      const animationDuration = 5 + Math.random() * 0;
+      const animationDuration = 5 + Math.random() * 10;
 
       return {
         id: Math.random().toString(36).substring(2, 9),
@@ -130,15 +131,14 @@ const MollyUI = () => {
     setRisk,
     riskGain,
     productStock,
-    setProductStock, // Восстановлено использование setProductStock
-  } = useGame(); // Убраны ненужные переменные: setCurrentProduct, unlocked, incomePerMinute
+    setProductStock,
+  } = useGame();
 
   const [showRaid, setShowRaid] = useState<boolean>(false);
   const [showStats, setShowStats] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<FloatingNotification[]>([]);
   const [currentStock, setCurrentStock] = useState<number>(0);
 
-  // Синхронизация текущего количества товара при смене продукта
   useEffect(() => {
     setCurrentStock(productStock[currentProduct.name] || 0);
   }, [currentProduct, productStock]);
@@ -241,23 +241,28 @@ const MollyUI = () => {
     <div className="molly-container">
       <NeonRain />
       <BinaryRain />
+      <div className="neon-grid-container"></div>
+
       <div className="notifications-container">
         {notifications.map(({ id, text, color, top, left }) => (
           <FloatingNotification key={id} text={text} color={color} top={top} left={left} />
         ))}
       </div>
 
-      <div className="header-section">
+      <div className="header-section hologram">
         <div className="title-money-wrapper">
-          <h1 className="game-title">$MOLLY <span className="money-amount">{money.toFixed(2)}</span></h1>
+          <h1 className="game-title glitch" data-text={`$MOLLY ${money.toFixed(2)}`}>
+            $MOLLY <span className="money-amount">{money.toFixed(2)}</span>
+          </h1>
         </div>
       </div>
 
       <div className="status-section">
         <div className="risk-header">
-          <span className="status-title neon-risk">RISK METER</span>
+          <span className="status-title neon-risk glitch" data-text="RISK METER">RISK METER</span>
         </div>
         <div className="risk-container">
+          <div className="scan-line"></div>
           <div
             className="risk-bar"
             style={{ width: `${risk}%` }}
@@ -265,62 +270,70 @@ const MollyUI = () => {
         </div>
 
         <div className="dealers-header">
-          <span className="status-title neon-dealers">DEALERS NETWORK</span>
+          <span className="status-title neon-dealers glitch" data-text="DEALERS NETWORK">DEALERS NETWORK</span>
         </div>
         <div className="dealers-container">
+          <div className="scan-line reverse"></div>
           <div className="dealers-bar">
-            <span className="dealers-text">DEALERS: {dealers}</span>
+            <span className="dealers-text glitch" data-text={`DEALERS: ${dealers}`}>DEALERS: {dealers}</span>
           </div>
         </div>
       </div>
 
-      <div className="current-product">
-        <h2 className="product-title neon-purple-name">{currentProduct.emoji} {currentProduct.name}</h2>
+      <div className="current-product hologram">
+        <h2 className="product-title neon-purple-name glitch" data-text={`${currentProduct.emoji} ${currentProduct.name}`}>
+          {currentProduct.emoji} {currentProduct.name}
+        </h2>
         <div className="product-stats">
-          <p>In stock: <strong>{currentStock} oz.</strong></p>
-          <p>Buy: <strong>${currentProduct.buyPrice.toFixed(2)}</strong> / Sell: <strong>${currentProduct.sellPrice.toFixed(2)}</strong></p>
+          <p>In stock: <strong className="neon-pulse-green">{currentStock} oz.</strong></p>
+          <p>Buy: <strong className="neon-pulse-blue">${currentProduct.buyPrice.toFixed(2)}</strong> / Sell: <strong className="neon-pulse-purple">${currentProduct.sellPrice.toFixed(2)}</strong></p>
         </div>
         <div className="action-buttons">
           <button
-            className="action-btn buy-btn"
+            className="action-btn buy-btn cyber-button"
             onClick={handleBuy}
             disabled={money < currentProduct.buyPrice}
           >
-            Buy 1 oz. (${currentProduct.buyPrice.toFixed(2)})
+            <span className="btn-glitch">BUY 1 oz. (${currentProduct.buyPrice.toFixed(2)})</span>
+            <span className="btn-background"></span>
           </button>
           <button
-            className="action-btn sell-btn"
+            className="action-btn sell-btn cyber-button"
             onClick={handleSell}
             disabled={currentStock <= 0}
           >
-            Sell 1 oz. (+${currentProduct.sellPrice.toFixed(2)})
+            <span className="btn-glitch">SELL 1 oz. (+${currentProduct.sellPrice.toFixed(2)})</span>
+            <span className="btn-background"></span>
           </button>
           <button
-            className="action-btn dealer-btn"
+            className="action-btn dealer-btn cyber-button"
             onClick={handleHireDealer}
             disabled={money < dealerCost}
           >
-            Hire dealer (${dealerCost.toFixed(2)})
+            <span className="btn-glitch">Hire dealer (${dealerCost.toFixed(2)})</span>
+            <span className="btn-background"></span>
           </button>
           <button
-            className="action-btn discard-btn"
+            className="action-btn discard-btn cyber-button"
             onClick={handleDiscardProduct}
           >
-            Discard Product
+            <span className="btn-glitch">Discard Product</span>
+            <span className="btn-background"></span>
           </button>
           <button
-            className="action-btn stats-btn"
+            className="action-btn stats-btn cyber-button"
             onClick={() => setShowStats(true)}
           >
-            Statistics
+            <span className="btn-glitch">Statistics</span>
+            <span className="btn-background"></span>
           </button>
         </div>
       </div>
 
       {showStats && (
         <div className="stats-modal">
-          <div className="stats-content">
-            <h3 className="stats-title">📊 STATISTICS</h3>
+          <div className="stats-content hologram">
+            <h3 className="stats-title glitch" data-text="📊 STATISTICS">📊 STATISTICS</h3>
             <div className="stats-grid">
               <div className="stat-item">
                 <span className="stat-label neon-green">TOTAL MONEY:</span>
@@ -328,14 +341,15 @@ const MollyUI = () => {
               </div>
               <div className="stat-item">
                 <span className="stat-label neon-blue">INCOME/MIN:</span>
-                <span className="stat-value neon-pulse-blue">${dealers * dealerIncomePerSecond * 60}</span>
+                <span className="stat-value neon-pulse-blue">${(dealers * dealerIncomePerSecond * 60).toFixed(2)}</span>
               </div>
             </div>
             <button
-              className="action-btn close-btn neon-hover"
+              className="action-btn close-btn cyber-button neon-hover"
               onClick={() => setShowStats(false)}
             >
-              CLOSE
+              <span className="btn-glitch">CLOSE</span>
+              <span className="btn-background"></span>
             </button>
           </div>
         </div>
@@ -343,8 +357,8 @@ const MollyUI = () => {
 
       {showRaid && (
         <div className="raid-modal">
-          <div className="raid-content">
-            <h3>🚔 Police Raid!</h3>
+          <div className="raid-content hologram">
+            <h3 className="glitch" data-text="🚔 Police Raid!">🚔 Police Raid!</h3>
             {currentStock > 0 ? (
               <>
                 <p>The police found your stash!</p>
@@ -356,8 +370,9 @@ const MollyUI = () => {
                 <p>You were lucky this time. Just a warning.</p>
               </>
             )}
-            <button className="action-btn raid-btn" onClick={handleRaidResolution}>
-              Continue
+            <button className="action-btn raid-btn cyber-button" onClick={handleRaidResolution}>
+              <span className="btn-glitch">Continue</span>
+              <span className="btn-background"></span>
             </button>
           </div>
         </div>

@@ -1,1 +1,253 @@
-.page-container { color: #66ff66; padding: 20px; font-family: monospace; }
+.referrals-container {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  background-color: #0a0a0a;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  padding: 20px;
+}
+
+.neon-rain-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.neon-drop {
+  position: absolute;
+  background: linear-gradient(to bottom, transparent, #0fff50);
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.binary-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.15;
+}
+
+.binary-digit {
+  position: absolute;
+  color: #0fff50;
+  font-size: 14px;
+  animation: binaryFall linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes binaryFall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.neon-title {
+  color: #0fff50;
+  text-shadow: 0 0 10px #0fff50, 0 0 20px #0fff50;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+  letter-spacing: 3px;
+}
+
+.neon-subtitle {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  margin: 30px 0 20px;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+}
+
+.section {
+  margin-bottom: 40px;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.glow-border {
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  position: relative;
+}
+
+.glow-border::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 12px;
+  z-index: -1;
+  animation: borderPulse 4s linear infinite;
+}
+
+@keyframes borderPulse {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.neon-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.neon-table th {
+  background-color: rgba(0, 50, 50, 0.5);
+  padding: 15px;
+  text-align: left;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.5);
+}
+
+.neon-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  font-size: 1rem;
+}
+
+.neon-row:hover {
+  background-color: rgba(0, 255, 255, 0.05);
+}
+
+.referral-link {
+  margin-top: 40px;
+  text-align: center;
+  padding: 25px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.link-box {
+  background-color: rgba(0, 20, 20, 0.8);
+  border: 1px solid #0fff50;
+  padding: 15px;
+  margin: 20px auto;
+  border-radius: 5px;
+  max-width: 600px;
+  font-size: 1.1rem;
+  color: #0fff50;
+  text-shadow: 0 0 5px #0fff50;
+  box-shadow: 0 0 10px rgba(15, 255, 80, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.earnings-info {
+  margin-top: 15px;
+  font-size: 1.2rem;
+}
+
+/* Glow text effects */
+.glow-text {
+  color: #fff;
+  text-shadow: 0 0 5px #fff;
+}
+
+.glow-text-blue {
+  color: #00a2ff;
+  text-shadow: 0 0 5px #00a2ff;
+}
+
+.glow-text-purple {
+  color: #b300ff;
+  text-shadow: 0 0 5px #b300ff;
+}
+
+.glow-text-green {
+  color: #0fff50;
+  text-shadow: 0 0 5px #0fff50;
+}
+
+.glow-text-cyan {
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.glow-text-yellow {
+  color: #ffff00;
+  text-shadow: 0 0 5px #ffff00;
+}
+
+/* Animations */
+.flicker {
+  animation: flicker 3s linear infinite;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 0 0 10px #0fff50, 0 0 20px #0fff50;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+  }
+  50% {
+    text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+  }
+}
+
+.typing-animation {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  border-right: 2px solid #0fff50;
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #0fff50 }
+}

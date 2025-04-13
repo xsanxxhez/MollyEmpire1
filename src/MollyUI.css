@@ -7,6 +7,10 @@
   --neon-red: #ff0033;
   --neon-orange: #ff5e00;
   --neon-yellow: #ffcc00;
+   --neon-cyan: #00b3b3;
+    --neon-lime: #a8ff00;
+    --neon-magenta: #ff00cc;
+    --neon-turquoise: #30d5c8;
   --dark-bg: #0a0a0a;
   --darker-bg: #050505;
   --container-bg: rgba(10, 20, 10, 0.3);
@@ -23,9 +27,20 @@ body {
   color: var(--neon-green);
   font-family: 'Courier New', monospace;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
-/* Обновленный стиль для неонового дождя */
+.neon-grid-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .neon-rain-container {
   position: fixed;
   top: 0;
@@ -108,7 +123,32 @@ body {
   padding: 20px;
   margin: 0 auto;
   position: relative;
-  z-index: 1;
+  z-index: 2;
+}
+
+.hologram {
+  position: relative;
+  overflow: hidden;
+}
+
+.hologram::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+    transparent,
+    rgba(0, 255, 255, 0.2),
+    transparent);
+  animation: hologram 6s infinite linear;
+  z-index: -1;
+}
+
+@keyframes hologram {
+  0% { transform: translate(0, 0) rotate(45deg); }
+  100% { transform: translate(100%, 100%) rotate(45deg); }
 }
 
 .header-section {
@@ -196,6 +236,27 @@ body {
   margin-bottom: 15px;
 }
 
+.scan-line {
+  position: absolute;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(0, 255, 255, 0.8),
+    transparent);
+  animation: scan 3s linear infinite;
+  z-index: 1;
+}
+
+.scan-line.reverse {
+  animation-direction: reverse;
+}
+
+@keyframes scan {
+  0% { left: -50%; }
+  100% { left: 150%; }
+}
+
 .risk-bar {
   height: 100%;
   background: linear-gradient(90deg,
@@ -240,10 +301,9 @@ body {
 .stats-modal {
   position: fixed;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   width: 100%;
-  height: 70%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
@@ -369,24 +429,6 @@ body {
   100% { text-shadow: 0 0 15px var(--neon-purple), 0 0 20px var(--neon-purple); }
 }
 
-.close-btn {
-  width: 100%;
-  padding: 12px;
-  background: rgba(100, 0, 100, 0.5);
-  color: var(--neon-purple);
-  border: 1px solid var(--neon-purple);
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s;
-}
-
-.neon-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px var(--neon-purple);
-  background: rgba(100, 0, 100, 0.7);
-}
-
 .current-product {
   background: var(--container-bg);
   border: 1px solid var(--neon-purple);
@@ -418,53 +460,137 @@ body {
 .action-buttons {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 }
 
-.action-btn {
-  padding: 12px;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
+.cyber-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid;
+  padding: 18px;
+  font-size: 20px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.2s;
+  overflow: hidden;
+  transition: all 0.3s;
   text-align: center;
+  border-radius: 5px;
 }
 
-.action-btn:disabled {
+.cyber-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+.btn-glitch {
+  position: relative;
+  z-index: 2;
+}
+
+.btn-background {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent);
+  transition: 0.4s;
+}
+
+.cyber-button:hover:not(:disabled) .btn-background {
+  left: 100%;
+}
+
+/* Кнопка для покупки */
 .buy-btn {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  padding: 20px 40px; /* Увеличиваем внутренние отступы (вертикально 20px, горизонтально 40px) */
+  font-size: 18px; /* Увеличиваем размер шрифта */
+  border-radius: 8px; /* Скругляем углы для более красивого вида */
+  min-width: 200px; /* Задаём минимальную ширину кнопки */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.buy-btn:hover:not(:disabled) {
   background: rgba(0, 30, 0, 0.5);
-  color: var(--neon-green);
-  border: 1px solid var(--neon-green);
+  box-shadow: 0 0 15px var(--neon-cyan);
 }
 
+/* Кнопка для продажи */
 .sell-btn {
+  color: var(--neon-lime);
+  border-color: var(--neon-lime);
+  padding: 20px 40px; /* Увеличиваем внутренние отступы */
+  font-size: 18px;
+  border-radius: 8px;
+  min-width: 200px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.sell-btn:hover:not(:disabled) {
   background: rgba(0, 15, 30, 0.5);
-  color: var(--neon-blue);
-  border: 1px solid var(--neon-blue);
+  box-shadow: 0 0 15px var(--neon-lime);
 }
 
+/* Кнопка для найма дилера */
 .dealer-btn {
+  color: var(--neon-magenta);
+  border-color: var(--neon-magenta);
+  padding: 20px 40px; /* Увеличиваем внутренние отступы */
+  font-size: 18px;
+  border-radius: 8px;
+  min-width: 200px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.dealer-btn:hover:not(:disabled) {
   background: rgba(30, 0, 30, 0.5);
-  color: var(--neon-pink);
-  border: 1px solid var(--neon-pink);
+  box-shadow: 0 0 15px var(--neon-magenta);
 }
 
+/* Кнопка для статистики */
 .stats-btn {
-  background: rgba(100, 0, 100, 0.5);
-  color: var(--neon-purple);
-  border: 1px solid var(--neon-purple);
+  color: var(--neon-turquoise);
+  border-color: var(--neon-turquoise);
+  padding: 20px 40px; /* Увеличиваем внутренние отступы */
+  font-size: 18px;
+  border-radius: 8px;
+  min-width: 200px;
+  text-align: center;
+  box-sizing: border-box;
 }
 
-.action-btn:not(:disabled):hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 15px currentColor;
+.stats-btn:hover:not(:disabled) {
+  background: rgba(100, 0, 100, 0.5);
+  box-shadow: 0 0 15px var(--neon-turquoise);
 }
+
+/* Кнопка для удаления продукта */
+.discard-btn {
+  color: var(--neon-red);
+  border-color: var(--neon-red);
+  padding: 20px 40px; /* Увеличиваем внутренние отступы */
+  font-size: 18px;
+  border-radius: 8px;
+  min-width: 200px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.discard-btn:hover:not(:disabled) {
+  background: rgba(100, 0, 0, 0.5);
+  box-shadow: 0 0 15px var(--neon-red);
+}
+
+
+
 
 .raid-modal {
   position: fixed;
@@ -484,10 +610,94 @@ body {
   border: 1px solid var(--neon-red);
   border-radius: 10px;
   padding: 20px;
-  max-width: 90%;
+  max-width: 100%;
   width: 400px;
   text-align: center;
-  animation: pulse 1.5s infinite;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px var(--neon-red); }
+  50% { box-shadow: 0 0 20px var(--neon-red); }
+  100% { box-shadow: 0 0 5px var(--neon-red); }
+}
+
+.glitch {
+  position: relative;
+}
+
+.glitch::before {
+  content: attr(data-text);
+  position: absolute;
+  left: -2px;
+  text-shadow: 1px 0 blue;
+  top: 0;
+  color: white;
+  background: black;
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: noise-anim 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  text-shadow: -1px 0 red;
+  top: 0;
+  color: white;
+  background: black;
+  overflow: hidden;
+  clip: rect(0, 900px, 0, 0);
+  animation: noise-anim2 3s infinite linear alternate-reverse;
+}
+
+@keyframes noise-anim {
+  0% { clip: rect(61px, 9999px, 52px, 0); }
+  5% { clip: rect(33px, 9999px, 144px, 0); }
+  10% { clip: rect(121px, 9999px, 115px, 0); }
+  15% { clip: rect(144px, 9999px, 162px, 0); }
+  20% { clip: rect(62px, 9999px, 180px, 0); }
+  25% { clip: rect(34px, 9999px, 42px, 0); }
+  30% { clip: rect(147px, 9999px, 179px, 0); }
+  35% { clip: rect(99px, 9999px, 63px, 0); }
+  40% { clip: rect(188px, 9999px, 122px, 0); }
+  45% { clip: rect(154px, 9999px, 14px, 0); }
+  50% { clip: rect(63px, 9999px, 37px, 0); }
+  55% { clip: rect(161px, 9999px, 147px, 0); }
+  60% { clip: rect(109px, 9999px, 175px, 0); }
+  65% { clip: rect(157px, 9999px, 88px, 0); }
+  70% { clip: rect(173px, 9999px, 131px, 0); }
+  75% { clip: rect(62px, 9999px, 70px, 0); }
+  80% { clip: rect(24px, 9999px, 126px, 0); }
+  85% { clip: rect(138px, 9999px, 200px, 0); }
+  90% { clip: rect(79px, 9999px, 103px, 0); }
+  95% { clip: rect(116px, 9999px, 192px, 0); }
+  100% { clip: rect(129px, 9999px, 91px, 0); }
+}
+
+@keyframes noise-anim2 {
+  0% { clip: rect(156px, 9999px, 166px, 0); }
+  5% { clip: rect(134px, 9999px, 198px, 0); }
+  10% { clip: rect(58px, 9999px, 98px, 0); }
+  15% { clip: rect(133px, 9999px, 172px, 0); }
+  20% { clip: rect(55px, 9999px, 97px, 0); }
+  25% { clip: rect(158px, 9999px, 129px, 0); }
+  30% { clip: rect(67px, 9999px, 122px, 0); }
+  35% { clip: rect(179px, 9999px, 117px, 0); }
+  40% { clip: rect(105px, 9999px, 173px, 0); }
+  45% { clip: rect(189px, 9999px, 72px, 0); }
+  50% { clip: rect(140px, 9999px, 37px, 0); }
+  55% { clip: rect(33px, 9999px, 78px, 0); }
+  60% { clip: rect(185px, 9999px, 190px, 0); }
+  65% { clip: rect(180px, 9999px, 8px, 0); }
+  70% { clip: rect(45px, 9999px, 196px, 0); }
+  75% { clip: rect(67px, 9999px, 173px, 0); }
+  80% { clip: rect(152px, 9999px, 47px, 0); }
+  85% { clip: rect(39px, 9999px, 136px, 0); }
+  90% { clip: rect(200px, 9999px, 10px, 0); }
+  95% { clip: rect(8px, 9999px, 218px, 0); }
+  100% { clip: rect(154px, 9999px, 61px, 0); }
 }
 
 @media (max-width: 480px) {
@@ -503,8 +713,8 @@ body {
     font-size: 20px;
   }
 
-  .action-btn {
-    padding: 10px;
+  .cyber-button {
+    padding: 15px;
     font-size: 14px;
   }
 
@@ -515,18 +725,4 @@ body {
   .stat-label {
     font-size: 12px;
   }
-}
-
-.action-btn.discard-btn {
-  background: rgba(255, 0, 0, 0.5);
-  color: var(--neon-red);
-  border: 1px solid var(--neon-red);
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.action-btn.discard-btn:hover:not(:disabled) {
-  background: rgba(255, 0, 0, 0.7);
-  box-shadow: 0 0 15px var(--neon-red);
 }
