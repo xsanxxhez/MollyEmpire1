@@ -9,7 +9,7 @@ const Tabs: React.FC = () => {
       <NavLink to="/progress" className="tab-link">📈</NavLink>
       <NavLink to="/referrals" className="tab-link">👥</NavLink>
       <NavLink to="/bonus" className="tab-link">🎁</NavLink>
-      <NavLink to="/settings" className="tab-link">⚙️</NavLink>
+
     </div>
   );
 };
