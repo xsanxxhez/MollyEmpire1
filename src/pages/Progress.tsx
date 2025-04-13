@@ -53,7 +53,6 @@ const Progress: React.FC = () => {
     money,
     setMoney,
     productStock,
-    setProductStock,
   } = useGame();
 
   const [activeTab, setActiveTab] = useState<"products" | "riskReduction">("products");

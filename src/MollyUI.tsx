@@ -122,10 +122,6 @@ const MollyUI = () => {
     money,
     setMoney,
     currentProduct,
-    setCurrentProduct,
-    productList,
-    staff,
-    setStaff,
     dealers,
     setDealers,
     dealerCost,
@@ -134,9 +130,8 @@ const MollyUI = () => {
     setRisk,
     riskGain,
     productStock,
-    setProductStock,
-    unlocked,
-  } = useGame();
+    setProductStock, // Восстановлено использование setProductStock
+  } = useGame(); // Убраны ненужные переменные: setCurrentProduct, unlocked, incomePerMinute
 
   const [showRaid, setShowRaid] = useState<boolean>(false);
   const [showStats, setShowStats] = useState<boolean>(false);
@@ -153,7 +148,6 @@ const MollyUI = () => {
 
   const dealerIncomePerSecond = 0.1;
   const dealerPriceGrowthRate = 1.15;
-  const incomePerMinute = dealers * dealerIncomePerSecond * 60;
 
   const addNotification = (text: string, color: string) => {
     const id = Math.random().toString(36).substring(2, 9);
@@ -243,19 +237,6 @@ const MollyUI = () => {
     setShowRaid(false);
   };
 
-  const handleProductChange = (product: typeof currentProduct) => {
-    if (unlocked.includes(product.name)) {
-      setCurrentProduct(product);
-      // При смене товара сохраняем текущее количество в productStock
-      setProductStock({
-        ...productStock,
-        [currentProduct.name]: currentStock
-      });
-      // И загружаем количество для нового товара
-      setCurrentStock(productStock[product.name] || 0);
-    }
-  };
-
   return (
     <div className="molly-container">
       <NeonRain />
@@ -294,27 +275,25 @@ const MollyUI = () => {
       </div>
 
       <div className="current-product">
-        
-
         <h2 className="product-title neon-purple-name">{currentProduct.emoji} {currentProduct.name}</h2>
         <div className="product-stats">
           <p>In stock: <strong>{currentStock} oz.</strong></p>
-          <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
+          <p>Buy: <strong>${currentProduct.buyPrice.toFixed(2)}</strong> / Sell: <strong>${currentProduct.sellPrice.toFixed(2)}</strong></p>
         </div>
         <div className="action-buttons">
           <button
             className="action-btn buy-btn"
             onClick={handleBuy}
-            disabled={money < buyPrice}
+            disabled={money < currentProduct.buyPrice}
           >
-            Buy 1 oz. (${buyPrice.toFixed(2)})
+            Buy 1 oz. (${currentProduct.buyPrice.toFixed(2)})
           </button>
           <button
             className="action-btn sell-btn"
             onClick={handleSell}
             disabled={currentStock <= 0}
           >
-            Sell 1 oz. (+${sellPrice.toFixed(2)})
+            Sell 1 oz. (+${currentProduct.sellPrice.toFixed(2)})
           </button>
           <button
             className="action-btn dealer-btn"
@@ -349,11 +328,7 @@ const MollyUI = () => {
               </div>
               <div className="stat-item">
                 <span className="stat-label neon-blue">INCOME/MIN:</span>
-                <span className="stat-value neon-pulse-blue">${incomePerMinute.toFixed(2)}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label neon-purple">REFERRALS:</span>
-                <span className="stat-value neon-pulse-purple">0</span>
+                <span className="stat-value neon-pulse-blue">${dealers * dealerIncomePerSecond * 60}</span>
               </div>
             </div>
             <button
