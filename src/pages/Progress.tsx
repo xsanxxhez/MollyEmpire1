@@ -12,16 +12,16 @@ const NeonRain = () => {
       drop.className = 'neon-drop';
 
       const left = Math.random() * 120;
-      const duration = 3 + Math.random() * 3; // Увеличил длительность падения
-      const height = 15 + Math.random() * 30; // Уменьшил высоту капель
+      const duration = 3 + Math.random() * 3;
+      const height = 15 + Math.random() * 30;
       const delay = Math.random() * 2;
-      const opacity = 0.3 + Math.random() * 0.5; // Добавил вариативность прозрачности
+      const opacity = 0.3 + Math.random() * 0.5;
 
       drop.style.left = `${left}%`;
       drop.style.height = `${height}px`;
       drop.style.animationDuration = `${duration}s`;
       drop.style.animationDelay = `${delay}s`;
-      drop.style.width = `${0.3 + Math.random() * 1}px`; // Уменьшил ширину капель
+      drop.style.width = `${0.3 + Math.random() * 1}px`;
       drop.style.opacity = `${opacity}`;
 
       container.appendChild(drop);
@@ -31,12 +31,10 @@ const NeonRain = () => {
       }, (duration + delay) * 1000);
     };
 
-    // Создаем начальные капли более редкими
     for (let i = 0; i < 250; i++) {
       setTimeout(createDrop, i * 250);
     }
 
-    // Увеличил интервал между созданием новых капель
     const interval = setInterval(createDrop, 50);
 
     return () => clearInterval(interval);
@@ -82,7 +80,6 @@ const Progress: React.FC = () => {
       updatedUpgrades[index].bought += 1;
       updatedUpgrades[index].cost = Math.floor(upgrade.cost * 1.5);
       setUpgradeData(updatedUpgrades);
-      setRiskGain(Math.max(0.1, riskGain - upgrade.reduction));
     }
   };
 

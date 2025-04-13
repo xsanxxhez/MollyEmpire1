@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-// Продукты в игре
 export interface Product {
   name: string;
   unlockPrice: number;
@@ -34,7 +33,7 @@ interface GameContextType {
   currentProduct: Product;
   setCurrentProduct: (p: Product) => void;
   productList: Product[];
-  productStock: { [key: string]: number }; // Склад для каждого продукта
+  productStock: { [key: string]: number };
   setProductStock: (stock: { [key: string]: number }) => void;
   staff: number;
   setStaff: (v: number) => void;
@@ -60,7 +59,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
   const [productStock, setProductStock] = useState<{ [key: string]: number }>(
     savedData.productStock ?? productList.reduce((acc, product) => {
-      acc[product.name] = 0; // Изначально склад пуст
+      acc[product.name] = savedData.productStock?.[product.name] || 0;
       return acc;
     }, {} as { [key: string]: number })
   );

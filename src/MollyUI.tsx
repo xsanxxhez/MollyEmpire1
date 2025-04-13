@@ -27,16 +27,16 @@ const NeonRain = () => {
       drop.className = 'neon-drop';
 
       const left = Math.random() * 120;
-      const duration = 3 + Math.random() * 3; // Увеличил длительность падения
-      const height = 15 + Math.random() * 30; // Уменьшил высоту капель
+      const duration = 3 + Math.random() * 3;
+      const height = 15 + Math.random() * 30;
       const delay = Math.random() * 2;
-      const opacity = 0.3 + Math.random() * 0.5; // Добавил вариативность прозрачности
+      const opacity = 0.3 + Math.random() * 0.5;
 
       drop.style.left = `${left}%`;
       drop.style.height = `${height}px`;
       drop.style.animationDuration = `${duration}s`;
       drop.style.animationDelay = `${delay}s`;
-      drop.style.width = `${0.4 + Math.random() * 1}px`; // Уменьшил ширину капель
+      drop.style.width = `${0.4 + Math.random() * 1}px`;
       drop.style.opacity = `${opacity}`;
 
       container.appendChild(drop);
@@ -46,12 +46,10 @@ const NeonRain = () => {
       }, (duration + delay) * 1000);
     };
 
-    // Создаем начальные капли более редкими
     for (let i = 0; i < 150; i++) {
       setTimeout(createDrop, i * 100);
     }
 
-    // Увеличил интервал между созданием новых капель
     const interval = setInterval(createDrop, 150);
 
     return () => clearInterval(interval);
@@ -124,6 +122,8 @@ const MollyUI = () => {
     money,
     setMoney,
     currentProduct,
+    setCurrentProduct,
+    productList,
     staff,
     setStaff,
     dealers,
@@ -133,11 +133,20 @@ const MollyUI = () => {
     risk,
     setRisk,
     riskGain,
+    productStock,
+    setProductStock,
+    unlocked,
   } = useGame();
 
   const [showRaid, setShowRaid] = useState<boolean>(false);
   const [showStats, setShowStats] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<FloatingNotification[]>([]);
+  const [currentStock, setCurrentStock] = useState<number>(0);
+
+  // Синхронизация текущего количества товара при смене продукта
+  useEffect(() => {
+    setCurrentStock(productStock[currentProduct.name] || 0);
+  }, [currentProduct, productStock]);
 
   const buyPrice = currentProduct.buyPrice;
   const sellPrice = currentProduct.sellPrice;
@@ -164,7 +173,7 @@ const MollyUI = () => {
       setMoney(money + income);
     }, 1000);
     return () => clearInterval(interval);
-  }, [dealers, setMoney]);
+  }, [dealers, money, setMoney]);
 
   useEffect(() => {
     if (risk >= 100 && !showRaid) {
@@ -175,16 +184,26 @@ const MollyUI = () => {
   const handleBuy = () => {
     if (money >= buyPrice) {
       setMoney(money - buyPrice);
-      setStaff(staff + 1);
+      const newStock = currentStock + 1;
+      setCurrentStock(newStock);
+      setProductStock({
+        ...productStock,
+        [currentProduct.name]: newStock
+      });
       setRisk(Math.min(100, risk + riskGain));
       addNotification(`+1 oz.`, '#0fff50');
     }
   };
 
   const handleSell = () => {
-    if (staff > 0) {
+    if (currentStock > 0) {
       setMoney(money + sellPrice);
-      setStaff(staff - 1);
+      const newStock = currentStock - 1;
+      setCurrentStock(newStock);
+      setProductStock({
+        ...productStock,
+        [currentProduct.name]: newStock
+      });
       setRisk(Math.min(100, risk + riskGain * 2));
       addNotification(`+$${sellPrice.toFixed(2)}`, '#00ffff');
     }
@@ -201,19 +220,40 @@ const MollyUI = () => {
   };
 
   const handleDiscardProduct = () => {
-    setStaff(0);
+    setCurrentStock(0);
+    setProductStock({
+      ...productStock,
+      [currentProduct.name]: 0
+    });
     setRisk(Math.max(0, risk - 5));
     addNotification("All products discarded", '#ff0033');
   };
 
   const handleRaidResolution = () => {
-    if (staff > 0) {
+    if (currentStock > 0) {
       const lost = money * 0.5;
       setMoney(money - lost);
-      setStaff(0);
+      setCurrentStock(0);
+      setProductStock({
+        ...productStock,
+        [currentProduct.name]: 0
+      });
     }
     setRisk(0);
     setShowRaid(false);
+  };
+
+  const handleProductChange = (product: typeof currentProduct) => {
+    if (unlocked.includes(product.name)) {
+      setCurrentProduct(product);
+      // При смене товара сохраняем текущее количество в productStock
+      setProductStock({
+        ...productStock,
+        [currentProduct.name]: currentStock
+      });
+      // И загружаем количество для нового товара
+      setCurrentStock(productStock[product.name] || 0);
+    }
   };
 
   return (
@@ -254,9 +294,11 @@ const MollyUI = () => {
       </div>
 
       <div className="current-product">
+        
+
         <h2 className="product-title neon-purple-name">{currentProduct.emoji} {currentProduct.name}</h2>
         <div className="product-stats">
-          <p>In stock: <strong>{staff} oz.</strong></p>
+          <p>In stock: <strong>{currentStock} oz.</strong></p>
           <p>Buy: <strong>${buyPrice.toFixed(2)}</strong> / Sell: <strong>${sellPrice.toFixed(2)}</strong></p>
         </div>
         <div className="action-buttons">
@@ -270,7 +312,7 @@ const MollyUI = () => {
           <button
             className="action-btn sell-btn"
             onClick={handleSell}
-            disabled={staff <= 0}
+            disabled={currentStock <= 0}
           >
             Sell 1 oz. (+${sellPrice.toFixed(2)})
           </button>
@@ -328,7 +370,7 @@ const MollyUI = () => {
         <div className="raid-modal">
           <div className="raid-content">
             <h3>🚔 Police Raid!</h3>
-            {staff > 0 ? (
+            {currentStock > 0 ? (
               <>
                 <p>The police found your stash!</p>
                 <p>You lose <strong>all your drugs</strong> and <strong>50% of your money.</strong></p>

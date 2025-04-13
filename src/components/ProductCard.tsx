@@ -45,7 +45,7 @@ const Progress: React.FC = () => {
           );
         })}
       </div>
-    </div>
+    </div> //гааыгрмышгм
   );
 };
 
