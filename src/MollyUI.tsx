@@ -122,17 +122,22 @@ const MollyUI = () => {
     setDealers,
     dealerCost,
     setDealerCost,
+    dealerIncome,
     risk,
     setRisk,
     riskGain,
     productStock,
     setProductStock,
+    securityUpgrades,
   } = useGame();
 
   const [showRaid, setShowRaid] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [notifications, setNotifications] = useState<Array<{ id: string; text: string; color: string; top: number; left: number }>>([]);
   const [currentStock, setCurrentStock] = useState(0);
+
+  const dealerEfficiency = 0.98;
+  const dealerCostIncrease = 0.1;
 
   useEffect(() => {
     setCurrentStock(productStock[currentProduct.name] || 0);
@@ -150,17 +155,26 @@ const MollyUI = () => {
     }, 2000);
   };
 
+  const getPermanentRiskReduction = () => {
+    return securityUpgrades
+      .filter(u => u.type === 'permanent')
+      .reduce((sum, upgrade) => sum + (upgrade.effect * upgrade.bought), 0);
+  };
+
+  const getEffectiveRiskGain = (baseGain: number) => {
+    const reduction = getPermanentRiskReduction();
+    return baseGain * (1 - Math.min(reduction, 0.9));
+  };
+
   useEffect(() => {
-    let currentMoney = money;
     const interval = setInterval(() => {
-      const income = dealers * 0.1;
-      if (income > 0) {
-        currentMoney += income;
-        setMoney(currentMoney);
+      if (dealers > 0) {
+        const totalIncome = dealers * dealerIncome;
+        setMoney((prev: number) => prev + totalIncome);
       }
     }, 1000);
     return () => clearInterval(interval);
-  }, [dealers, money, setMoney]);
+  }, [dealers, dealerIncome, setMoney]);
 
   useEffect(() => {
     if (risk >= 100 && !showRaid) {
@@ -177,7 +191,7 @@ const MollyUI = () => {
         ...productStock,
         [currentProduct.name]: newStock
       });
-      setRisk(Math.min(100, risk + riskGain));
+      setRisk(prev => Math.min(100, prev + getEffectiveRiskGain(riskGain) * currentProduct.riskMultiplier));
       addNotification(`+1 oz.`, '#0fff50');
     }
   };
@@ -191,7 +205,7 @@ const MollyUI = () => {
         ...productStock,
         [currentProduct.name]: newStock
       });
-      setRisk(Math.min(100, risk + riskGain * 2));
+      setRisk(prev => Math.min(100, prev + getEffectiveRiskGain(riskGain * 1.5) * currentProduct.riskMultiplier));
       addNotification(`+$${currentProduct.sellPrice.toFixed(2)}`, '#00ffff');
     }
   };
@@ -199,9 +213,12 @@ const MollyUI = () => {
   const handleHireDealer = () => {
     if (money >= dealerCost) {
       setMoney(money - dealerCost);
-      setDealers(dealers + 1);
-      setDealerCost(parseFloat((dealerCost * 1.15).toFixed(2)));
-      setRisk(Math.min(100, risk + riskGain * 5));
+      const newDealers = dealers + 1;
+      setDealers(newDealers);
+      const newDealerCost = dealerCost * (1 + dealerCostIncrease * newDealers);
+      setDealerCost(newDealerCost);
+      const riskIncrease = getEffectiveRiskGain(riskGain * 5) * Math.pow(dealerEfficiency, dealers);
+      setRisk(prev => Math.min(100, prev + riskIncrease));
       addNotification('+1 Dealer', '#ff00ff');
     }
   };
@@ -212,7 +229,7 @@ const MollyUI = () => {
       ...productStock,
       [currentProduct.name]: 0
     });
-    setRisk(Math.max(0, risk - 5));
+    setRisk(prev => Math.max(0, prev - 5));
     addNotification("Inventory cleared", '#ff0033');
   };
 
@@ -230,6 +247,8 @@ const MollyUI = () => {
     setRisk(0);
     setShowRaid(false);
   };
+
+  const dealerEfficiencyPercent = (100 * (1 - Math.pow(dealerEfficiency, dealers))).toFixed(1);
 
   return (
     <div className="molly-container">
@@ -264,7 +283,9 @@ const MollyUI = () => {
         </div>
         <div className="dealers-container">
           <div className="dealers-bar">
-            <span className="dealers-text">DEALERS: {dealers}</span>
+            <span className="dealers-text">
+              DEALERS: {dealers} (Eff: {dealerEfficiencyPercent}%)
+            </span>
           </div>
         </div>
       </div>
@@ -335,7 +356,9 @@ const MollyUI = () => {
               </div>
               <div className="stat-item">
                 <span className="stat-label neon-blue">INCOME/MIN:</span>
-                <span className="stat-value neon-pulse-blue">${(dealers * 6).toFixed(2)}</span>
+                <span className="stat-value neon-pulse-blue">
+                  ${(dealers * dealerIncome * 60).toFixed(2)}
+                </span>
               </div>
               <div className="stat-item">
                 <span className="stat-label neon-purple">CURRENT DRUG:</span>
@@ -344,6 +367,10 @@ const MollyUI = () => {
               <div className="stat-item">
                 <span className="stat-label neon-green">STOCK:</span>
                 <span className="stat-value">{currentStock} oz.</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label neon-yellow">RISK REDUCTION:</span>
+                <span className="stat-value">{Math.round(getPermanentRiskReduction() * 100)}%</span>
               </div>
             </div>
             <button
@@ -362,7 +389,7 @@ const MollyUI = () => {
             <h3>🚔 Police Raid!</h3>
             {currentStock > 0 ? (
               <>
-                <p>The police found your stash!</p>
+                <p>The police found your staff!</p>
                 <p>You lose <strong>all your drugs</strong> and <strong>50% of your money.</strong></p>
               </>
             ) : (

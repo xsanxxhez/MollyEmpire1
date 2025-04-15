@@ -83,3 +83,16 @@ html, body, #root {
   height: calc(100% - 60px); /* Adjust based on your tabs height */
   overflow-y: auto;
 }
+.app-wrapper {
+  position: relative;
+}
+
+.page-content {
+  position: relative;
+  z-index: 2;
+}
+
+.game-container {
+  position: relative;
+  min-height: 100vh;
+}
