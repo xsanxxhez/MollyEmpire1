@@ -143,6 +143,9 @@ body::before {
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  min-height: 100vh; /* Добавлено */
+  display: flex; /* Добавлено */
+  flex-direction: column; /* Добавлено */
 }
 
 /* Заголовок с эффектом глитча */
@@ -349,7 +352,9 @@ body::before {
     0 0 30px var(--neon-pink);
   z-index: 1;
   animation: neon-flicker 1.5s infinite alternate;
+  flex-grow: 1; /* Добавлено */
 }
+
 
 @keyframes neon-flicker {
   0% {
@@ -420,12 +425,12 @@ body::before {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-<<<<<<< HEAD
-
-=======
-  overflow: hidden;
->>>>>>> f6f894af1d1b581795b9f840949cb3dc4f4d3cc7
-
+  position: relative; /* Добавлено */
+  z-index: 10; /* Добавлено */
+  margin-top: auto; /* Добавлено */
+  padding-bottom: 20px; /* Добавлено */
+  transform: translateZ(0); /* Фикс для аппаратного ускорения */
+  will-change: transform; /* Оптимизация для мобильных */
 }
 
 .action-btn {
@@ -439,7 +444,9 @@ body::before {
   text-align: center;
   position: relative;
   overflow: hidden;
-  transform: translateZ(0);
+  transform: translateZ(0); /* Фикс для рендеринга */
+  -webkit-backface-visibility: hidden; /* Фикс для iOS */
+  backface-visibility: hidden;
 }
 
 .action-btn:not(:disabled):hover {
@@ -677,8 +684,23 @@ body::before {
     font-size: 12px;
   }
 }
-<<<<<<< HEAD
-=======
 
+@media (max-width: 768px) {
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 14px; /* Увеличиваем для удобства нажатия */
+    font-size: 18px; /* Увеличиваем текст */
+    min-height: 50px; /* Минимальная высота для тач-устройств */
+  }
+
+  .molly-container {
+    padding: 15px;
+  }
+
+  .current-product {
+    padding: 20px;
+  }
 }
->>>>>>> f6f894af1d1b581795b9f840949cb3dc4f4d3cc7
