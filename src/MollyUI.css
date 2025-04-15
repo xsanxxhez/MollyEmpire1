@@ -185,6 +185,7 @@ body::before {
 }
 
 .money-amount {
+  font-weight: 600;
   font-size: 2.5rem;
   color: var(--neon-green);
   text-shadow:
@@ -340,7 +341,7 @@ body::before {
   border: 2px solid var(--neon-purple);
   border-radius: 15px;
   padding: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
   overflow: hidden;
   box-shadow:
@@ -419,8 +420,12 @@ body::before {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
+<<<<<<< HEAD
+
+=======
   overflow: hidden;
-  
+>>>>>>> f6f894af1d1b581795b9f840949cb3dc4f4d3cc7
+
 }
 
 .action-btn {
@@ -672,5 +677,8 @@ body::before {
     font-size: 12px;
   }
 }
+<<<<<<< HEAD
+=======
 
 }
+>>>>>>> f6f894af1d1b581795b9f840949cb3dc4f4d3cc7
