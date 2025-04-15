@@ -307,45 +307,47 @@ const MollyUI = () => {
             <strong>${currentProduct.sellPrice.toFixed(2)}</strong>
           </p>
         </div>
-        <div style={{position: 'relative', zIndex: 10}}>
-                  <div className="action-buttons">
-                    <button
-                      className="action-btn buy-btn"
-                      onClick={handleBuy}
-                      disabled={money < currentProduct.buyPrice}
-                    >
-                      Buy 1 oz. (${currentProduct.buyPrice.toFixed(2)})
-                    </button>
-                    <button
-                      className="action-btn sell-btn"
-                      onClick={handleSell}
-                      disabled={currentStock <= 0}
-                    >
-                      Sell 1 oz. (+${currentProduct.sellPrice.toFixed(2)})
-                    </button>
-                    <button
-                      className="action-btn dealer-btn"
-                      onClick={handleHireDealer}
-                      disabled={money < dealerCost}
-                    >
-                      Hire dealer (${dealerCost.toFixed(2)})
-                    </button>
-                    <button
-                      className="action-btn discard-btn"
-                      onClick={handleDiscardProduct}
-                      disabled={currentStock <= 0}
-                    >
-                      Discard Product
-                    </button>
-                    <button
-                      className="action-btn stats-btn"
-                      onClick={() => setShowStats(true)}
-                    >
-                      Statistics
-                    </button>
-                  </div>
+           <div className="action-buttons-container">
+                <div className="action-buttons">
+                  <button
+                    className="action-btn buy-btn"
+                    onClick={handleBuy}
+                    disabled={money < currentProduct.buyPrice}
+                  >
+                    Buy 1 oz. (${currentProduct.buyPrice.toFixed(2)})
+                  </button>
+                  <button
+                    className="action-btn sell-btn"
+                    onClick={handleSell}
+                    disabled={currentStock <= 0}
+                  >
+                    Sell 1 oz. (+${currentProduct.sellPrice.toFixed(2)})
+                  </button>
+                  <button
+                    className="action-btn dealer-btn"
+                    onClick={handleHireDealer}
+                    disabled={money < dealerCost}
+                  >
+                    Hire dealer (${dealerCost.toFixed(2)})
+                  </button>
+                  <button
+                    className="action-btn discard-btn"
+                    onClick={handleDiscardProduct}
+                    disabled={currentStock <= 0}
+                  >
+                    Discard Product
+                  </button>
+                  <button
+                    className="action-btn stats-btn"
+                    onClick={() => setShowStats(true)}
+                  >
+                    Statistics
+                  </button>
                 </div>
               </div>
+            </div>
+
+
 
       {showStats && (
         <div className="stats-modal">
