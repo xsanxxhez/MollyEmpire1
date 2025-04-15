@@ -420,6 +420,7 @@ body::before {
   grid-template-columns: 1fr;
   gap: 10px;
   overflow: hidden;
+  contain: strict;
 }
 
 .action-btn {
@@ -669,5 +670,11 @@ body::before {
 
   .stat-label {
     font-size: 12px;
+  }
+}
+@media (hover: hover) {
+  .action-btn:not(:disabled):hover {
+    transform: translateY(-2px) translateZ(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
 }
