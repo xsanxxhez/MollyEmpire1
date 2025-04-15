@@ -185,6 +185,7 @@ body::before {
 }
 
 .money-amount {
+  font-weight: 600;
   font-size: 2.5rem;
   color: var(--neon-green);
   text-shadow:
@@ -340,7 +341,7 @@ body::before {
   border: 2px solid var(--neon-purple);
   border-radius: 15px;
   padding: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   position: relative;
   overflow: hidden;
   box-shadow:
@@ -419,8 +420,8 @@ body::before {
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-  overflow: hidden;
-  contain: strict;
+
+  
 }
 
 .action-btn {
@@ -670,11 +671,5 @@ body::before {
 
   .stat-label {
     font-size: 12px;
-  }
-}
-@media (hover: hover) {
-  .action-btn:not(:disabled):hover {
-    transform: translateY(-2px) translateZ(0);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
 }
