@@ -1,4 +1,4 @@
-# React + TypeScript + Vite: The clicker-game in telegramm about drugdealer. Manage risk, hire dealers, achieve new peaks and sell your stuff.
+# React + TypeScript + Vite: The clicker-game in telegram about drugdealer. Manage risk, hire dealers, achieve new peaks and sell your stuff.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
